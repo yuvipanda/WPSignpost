@@ -68,11 +68,12 @@ for year in xrange(START_YEAR, CUR_YEAR + 1):
     for article in articles:
         title = html.tostring(article, method='text', encoding='utf-8')
         page_title = article.get('href').replace('/wiki/', '')
+        article_title = article.text_content()
         date = parser.parse(page_title.split('/')[1])
         if date not in dates:
             cur_issue = Issue(date=date)
             dates.append(date)
             session.commit()
         author_name, author_link, content = parse_article(page_title)
-        Post(title=page_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue)
+        Post(permalink=page_title, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue)
         session.commit()
