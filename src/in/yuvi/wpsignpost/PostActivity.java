@@ -43,9 +43,20 @@ public class PostActivity extends Activity {
 			}
 			return p;
 		}
+
+		@Override
+		protected void onPostExecute(Post result) {
+			super.onPostExecute(result);
+			setupShareFunction(result);
+			String prefix = String.format(getString(R.string.post_prefix),
+					post.permalink, post.title);
+			String content = prefix + post.content;
+			webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
+					"text/html", "utf-8", null);
+		}
 		
 	}
-	private void setupShareFunction() {
+	private void setupShareFunction(Post post) {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setAction(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
@@ -79,23 +90,6 @@ public class PostActivity extends Activity {
 		
 		FetchPostTask task = new FetchPostTask();
 		task.execute(post);
-		
-		try {
-			post = task.get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		String prefix = String.format(getString(R.string.post_prefix),
-				post.permalink, post.title);
-		String content = prefix + post.content;
-		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
-				"text/html", "utf-8", null);
 	}
 
 	@Override
