@@ -83,4 +83,4 @@ for year in xrange(START_YEAR, CUR_YEAR + 1):
             session.commit()
         author_name, author_link, content, image_link = parse_article(page_title)
         Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-    session.commit()
+session.commit()
