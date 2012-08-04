@@ -20,32 +20,55 @@ public class PostsActivity extends Activity {
 
 	SignpostAPI api;
 
-	private Issue issue;
+	private GridView grid;
 	
 	private class FetchIssuesTask extends AsyncTask<Object, Object, Issue> {
 
+		Context context;
+		public FetchIssuesTask(Context c) {
+			context = c;
+		}
 		@Override
 		protected Issue doInBackground(Object... params) {
+			Issue issue = null;
 			   try {
 				   issue = api.getLatestIssue();
 				   issue.fetchPosts(api);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			   return issue;
+			return issue;
 		}
 
 		@Override
 		protected void onPostExecute(Issue result) {
 			super.onPostExecute(result);
+			showIssue(result);
 		}
 				
 	}
 	
+	private void showIssue(Issue issue) {
+		grid.setAdapter(new PostsAdaptor(this, issue));
+		grid.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				Post p = (Post) parent.getItemAtPosition(position);
+				Intent i = new Intent(parent.getContext(),
+						PostActivity.class);
+				i.putExtra("post", p);
+				startActivity(i);
+			}
+		});
+	}
+	
 	private class PostsAdaptor extends BaseAdapter {
 		private Context context;
-		public PostsAdaptor(Context c) {
+		private Issue issue;
+		public PostsAdaptor(Context c, Issue issue) {
 			this.context = c;
+			this.issue = issue;
 		}
 		
 		@Override
@@ -84,30 +107,10 @@ public class PostsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         api = ((SignpostApp)getApplicationContext()).signpostAPI;
-        FetchIssuesTask t = new FetchIssuesTask();
+        grid = (GridView) findViewById(R.id.articles_grid);
+        FetchIssuesTask t = new FetchIssuesTask(this);
         t.execute();  
-        try {
-			t.get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        GridView grid = (GridView) findViewById(R.id.articles_grid);
-        grid.setAdapter(new PostsAdaptor(this));
-        grid.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Post p = (Post)parent.getItemAtPosition(position);
-				Intent i = new Intent(parent.getContext(), PostActivity.class);
-				i.putExtra("post", p);
-				startActivity(i);
-			}
-		});
+       
     }
 
     @Override
