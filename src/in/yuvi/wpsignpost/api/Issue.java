@@ -10,9 +10,7 @@ import java.io.*;
 public class Issue implements Serializable {
 	public Date date;
 	public long id;
-	
-	SignpostAPI api;
-	
+		
 	public ArrayList<Post> posts;
 	
 	public static Issue fromJSON(JSONObject issueData) {

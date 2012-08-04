@@ -1,5 +1,8 @@
 <resources>
 
     <style name="AppTheme" parent="android:Theme.Light" />
-
+	
+    <style name="PostTheme" parent="AppTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
 </resources>

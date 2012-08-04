@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".PostActivity"
-            android:label="@string/title_activity_post" >
+            android:label="@string/title_activity_post"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="in.yuvi.wpsignpost.PostsActivity" />
