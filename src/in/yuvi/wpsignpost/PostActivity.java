@@ -37,7 +37,8 @@ public class PostActivity extends Activity {
 	        prov.setShareIntent(shareIntent);
 
 	        return true;
-	    }
+	}
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,8 @@ public class PostActivity extends Activity {
         
         Intent intent = getIntent();
         post = (Post)intent.getExtras().get("post");
-        webview.loadDataWithBaseURL("http://en.wikipedia.org", post.content, "text/html", "utf-8", null);
+        String content = getString(R.string.post_css) + post.content;
+        webview.loadDataWithBaseURL("http://en.wikipedia.org", content, "text/html", "utf-8", null);
     }
     
     @Override
