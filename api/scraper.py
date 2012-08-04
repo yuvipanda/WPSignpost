@@ -79,8 +79,8 @@ for year in xrange(START_YEAR, CUR_YEAR + 1):
         date = parser.parse(page_title.split('/')[1])
         if date not in dates:
             cur_issue = Issue(date=date)
-            dates.append(date)
             session.commit()
+            dates.append(date)
         author_name, author_link, content, image_link = parse_article(page_title)
         Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-session.commit()
+        session.commit()
