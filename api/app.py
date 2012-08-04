@@ -15,7 +15,7 @@ def issues(page=0):
 
 @app.route('/issue/latest')
 def latest_issue():
-    issue = Issue.query.order_by('date').slice(0, 1)[0]
+    issue = Issue.query.order_by(Issue.date.desc()).slice(0, 1)[0]
     return (json.dumps(issue.serialize()), 200, {'Content-Type': 'application/json'})
 
 @app.route('/posts/<int:issue_id>')
