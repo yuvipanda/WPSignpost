@@ -21,8 +21,13 @@ def latest_issue():
 @app.route('/posts/<int:issue_id>')
 def posts(issue_id):
     issue = Issue.query.filter_by(id=issue_id).one()
-    data = [post.serialize() for post in issue.posts]
+    data = [post.serialize(True) for post in issue.posts]
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
+
+@app.route('/post/<int:post_id>')
+def post(post_id):
+    post = Post.query.filter_by(id=post_id).one()
+    return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
 
 if __name__ == '__main__':
     app.run()

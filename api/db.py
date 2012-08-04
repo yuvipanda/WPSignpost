@@ -17,16 +17,18 @@ class Post(Entity):
     image_link = Field(Unicode(255))
     issue = ManyToOne('Issue')
 
-    def serialize(self):
-        return {
+    def serialize(self, exclude_content=False):
+        data = {
             'id': self.id,
             'permalink': self.permalink,
             'title': self.title,
-            'content': self.content,
             'author_name': self.author,
             'author_link': self.author_link,
             'image_url': self.image_link
         }
+        if not exclude_content:
+            data['content'] = self.content
+        return data
 
 class Issue(Entity):
     using_options(tablename='issues')
