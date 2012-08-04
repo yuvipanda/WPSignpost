@@ -1,6 +1,7 @@
 package in.yuvi.wpsignpost;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import in.yuvi.wpsignpost.api.*;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.*;
 import android.view.View.*;
@@ -86,6 +89,12 @@ public class PostsActivity extends Activity {
 			return 0;
 		}
 
+		private int getRandomGrey() {
+			Random r = new Random();
+			int val = r.nextInt(128);
+			return Color.rgb(val, val, val);
+		}
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Post p = issue.posts.get(position);
@@ -94,12 +103,15 @@ public class PostsActivity extends Activity {
 				tv = new TextView(context);
 				tv.setGravity(Gravity.BOTTOM);
 				tv.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT, 256));
-				tv.setTextSize(16);
+				tv.setTextSize(20);
+				tv.setTypeface(Typeface.SERIF);
 				tv.setPadding(8, 8, 8, 8);
-				//tv.setLayoutParams(new GridView.LayoutParams(85, 85));
+				tv.setTextColor(0xFFFFFFFF);
+				tv.setBackgroundColor(getRandomGrey());
 			} else {
 				tv = (TextView) convertView;
 			}
+
 			tv.setText(p.title);
 			return tv;
 		}
