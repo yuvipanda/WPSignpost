@@ -14,6 +14,7 @@ class Post(Entity):
     content = Field(UnicodeText)
     author = Field(Unicode(255))
     author_link = Field(Unicode(255))
+    image_link = Field(Unicode(255))
     issue = ManyToOne('Issue')
 
     def serialize(self):
@@ -23,7 +24,8 @@ class Post(Entity):
             'title': self.title,
             'content': self.content,
             'author_name': self.author,
-            'author_link': self.author_link
+            'author_link': self.author_link,
+            'image_url': self.image_link
         }
 
 class Issue(Entity):
