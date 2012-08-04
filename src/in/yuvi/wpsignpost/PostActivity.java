@@ -49,7 +49,8 @@ public class PostActivity extends Activity {
         
         Intent intent = getIntent();
         post = (Post)intent.getExtras().get("post");
-        String content = getString(R.string.post_css) + post.content;
+        String prefix = String.format(getString(R.string.post_prefix), post.permalink, post.title);
+        String content = prefix + post.content;
         webview.loadDataWithBaseURL("http://en.wikipedia.org", content, "text/html", "utf-8", null);
     }
     

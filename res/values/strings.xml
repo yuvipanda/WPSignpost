@@ -1,18 +1,38 @@
 <resources>
 
     <string name="app_name">WPSignpost</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_post">PostActivity</string>
-	<string name="post_css"><![CDATA[
-	   	<style>
-	   	    * {
-	   	    	font-family: Roboto;
-	   	    	font-size: 14px;
-	   	    	line-spacing: 16px;
+    <string name="title_activity_main">The Signpost</string>
+    <string name="title_activity_post"></string>
+	<string name="post_prefix" formatted="false"><![CDATA[
+	    <style>
+	   	    body {
+	   	    	font-family: Roboto, sans-serif;
+	   	    	font-size: 16px;
+	   	    	line-spacing: 18px;
+	   	    	background-color: #f2f2f2;
+	   	    	color: #222;
 	   	    }
+	   	    h1 {
+	   	    	font-size: 20px;
+	   	    	font-family: serif;
+	   	    	display: block;
+	   	    	color: #000;
+	   	    	padding-bottom: 5px;
+	   	    	margin-top:10px;
+	   	    	border-bottom: 1px solid #000;
+	   	    	font-weight: 700;
+	   	    	text-transform: Uppercase;
+	   	    }
+	   	    h3 {
+	   	    	font-size: 18px;
+	   	    }
+	   	   	a {
+	   	   		text-decoration: none;
+	   	   	}
 	   	</style>
+	    	<a href="%s"><h1>%s</h1></a>
 	]]>
+	    
 	</string>
 </resources>
