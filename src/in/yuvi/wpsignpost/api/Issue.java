@@ -1,11 +1,13 @@
 package in.yuvi.wpsignpost.api;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import org.json.simple.JSONObject;
+import java.io.*;
 
-public class Issue {
+public class Issue implements Serializable {
 	public Date date;
 	public long id;
 	
