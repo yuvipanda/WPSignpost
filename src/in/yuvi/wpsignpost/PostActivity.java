@@ -1,7 +1,11 @@
 package in.yuvi.wpsignpost;
 
+import java.util.concurrent.ExecutionException;
+
 import in.yuvi.wpsignpost.api.Post;
+import in.yuvi.wpsignpost.api.SignpostAPI;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +18,8 @@ import android.support.v4.app.NavUtils;
 public class PostActivity extends Activity {
 	private WebView webview;
 	private Post post;
+	private ShareActionProvider shareProvider;
+	private SignpostAPI api;
 	
 	private class PostWebViewClient extends WebViewClient {
 		@Override
@@ -24,44 +30,82 @@ public class PostActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu){
-	     getMenuInflater().inflate(R.menu.activity_post, menu);
-	        ShareActionProvider prov = (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
-	        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-	        shareIntent.setAction(Intent.ACTION_SEND);
-	        shareIntent.setType("text/plain");
-	        shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
-	        shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
-	        
-	        prov.setShareIntent(shareIntent);
+	private class FetchPostTask extends AsyncTask<Post, Object, Post> {
 
-	        return true;
+		@Override
+		protected Post doInBackground(Post... params) {
+			Post p = params[0];
+			try {
+				p.fetchContent(api);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return p;
+		}
+		
+	}
+	private void setupShareFunction() {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
+		shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
+
+		shareProvider.setShareIntent(shareIntent);
 	}
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        webview = new WebView(this);
-        webview.setWebViewClient(new PostWebViewClient());
-        setContentView(webview);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        
-        Intent intent = getIntent();
-        post = (Post)intent.getExtras().get("post");
-        String prefix = String.format(getString(R.string.post_prefix), post.permalink, post.title);
-        String content = prefix + post.content;
-        webview.loadDataWithBaseURL("http://en.wikipedia.org", content, "text/html", "utf-8", null);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_post, menu);
+		shareProvider = (ShareActionProvider) menu.findItem(
+				R.id.menu_share).getActionProvider();
+		return true;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+				
+        api = ((SignpostApp)getApplicationContext()).signpostAPI;
+
+		webview = new WebView(this);
+		webview.setWebViewClient(new PostWebViewClient());
+		setContentView(webview);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		Intent intent = getIntent();
+		post = (Post) intent.getExtras().get("post");
+		
+		FetchPostTask task = new FetchPostTask();
+		task.execute(post);
+		
+		try {
+			post = task.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		String prefix = String.format(getString(R.string.post_prefix),
+				post.permalink, post.title);
+		String content = prefix + post.content;
+		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
+				"text/html", "utf-8", null);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 }

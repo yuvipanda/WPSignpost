@@ -23,7 +23,7 @@ public class Issue implements Serializable {
 		return issue;
 	}
 	
-	public ArrayList<Post> fetchPosts() throws Exception {
+	public ArrayList<Post> fetchPosts(SignpostAPI api) throws Exception {
 		if( posts == null ) {
 			posts = api.getPosts(this.id);
 		}

@@ -25,7 +25,6 @@ public class SignpostAPI {
 	private Issue makeIssue(Object json) {
 		JSONObject issueData = (JSONObject)json;
 		Issue issue = Issue.fromJSON(issueData);
-		issue.api = this;
 		return issue;
 	}
 	
@@ -56,6 +55,11 @@ public class SignpostAPI {
 		}
 		
 		return posts;
+	}
+	
+	public Post getPost(long id) throws Exception {
+		String dataString = Http.get(host + "/post/" + id).use(client).asString();
+		return Post.fromJSON((JSONObject) json.parse(dataString));
 	}
 		
 }

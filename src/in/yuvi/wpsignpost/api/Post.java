@@ -9,10 +9,12 @@ public class Post implements Serializable{
 	public String author_name;
 	public String author_link;
 	public String image_url;
+	public long id;
 	public Issue issue;
 	
 	public static Post fromJSON(JSONObject postData) {
 		Post p = new Post();
+		p.id = (Long)postData.get("id");
 		p.title = (String)postData.get("title");
 		p.content = (String)postData.get("content");
 		p.permalink = (String)postData.get("permalink");
@@ -23,5 +25,12 @@ public class Post implements Serializable{
 		return p;
 	}
 
+	public String fetchContent(SignpostAPI api) throws Exception {
+		if(this.content == null) {
+			Post p = api.getPost(this.id);
+			this.content = p.content;
+		}
+		return this.content;
+	}
 
 }

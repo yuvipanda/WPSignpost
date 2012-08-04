@@ -22,21 +22,21 @@ public class PostsActivity extends Activity {
 
 	private Issue issue;
 	
-	private class FetchIssuesTask extends AsyncTask<Object, Object, ArrayList<Issue>> {
+	private class FetchIssuesTask extends AsyncTask<Object, Object, Issue> {
 
 		@Override
-		protected ArrayList<Issue> doInBackground(Object... params) {
+		protected Issue doInBackground(Object... params) {
 			   try {
 				   issue = api.getLatestIssue();
-				   issue.fetchPosts();
+				   issue.fetchPosts(api);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			   return null;
+			   return issue;
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<Issue> result) {
+		protected void onPostExecute(Issue result) {
 			super.onPostExecute(result);
 		}
 				
@@ -83,7 +83,7 @@ public class PostsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        api = new SignpostAPI("http://yuvi.in/signpost");
+        api = ((SignpostApp)getApplicationContext()).signpostAPI;
         FetchIssuesTask t = new FetchIssuesTask();
         t.execute();  
         try {
