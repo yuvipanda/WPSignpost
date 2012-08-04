@@ -22,24 +22,21 @@ import android.widget.AdapterView.OnItemClickListener;
 public class PostsActivity extends Activity {
 
 	SignpostAPI api;
+	private Issue issue = null;
 
 	private GridView grid;
 	
 	private class FetchIssuesTask extends AsyncTask<Object, Object, Issue> {
-
-		Context context;
-		public FetchIssuesTask(Context c) {
-			context = c;
-		}
 		@Override
 		protected Issue doInBackground(Object... params) {
-			Issue issue = null;
+			if(issue == null) {
 			   try {
 				   issue = api.getLatestIssue();
 				   issue.fetchPosts(api);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
 			return issue;
 		}
 
@@ -124,12 +121,25 @@ public class PostsActivity extends Activity {
         setContentView(R.layout.activity_main);
         api = ((SignpostApp)getApplicationContext()).signpostAPI;
         grid = (GridView) findViewById(R.id.articles_grid);
-        FetchIssuesTask t = new FetchIssuesTask(this);
+        FetchIssuesTask t = new FetchIssuesTask();
         t.execute();  
-       
     }
+    
 
-    @Override
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		issue = (Issue)savedInstanceState.getSerializable("issue");	
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("issue", issue);
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
