@@ -8,8 +8,12 @@ app = Flask(__name__)
 app.debug = True
 
 @app.route('/issues')
-def issues(page=0):
-    issues = Issue.query.all()
+def firstIssues():
+    return issues(0)
+
+@app.route('/issues/<int:offset>')
+def issues(offset=0):
+    issues = Issue.query.order_by(Issue.date.desc()).limit(10).offset(offset)
     data = [issue.serialize() for issue in issues]
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
 
