@@ -99,7 +99,7 @@ public class PostsActivity extends Activity {
 			if(convertView == null) {
 				tv = new TextView(context);
 				tv.setGravity(Gravity.BOTTOM);
-				tv.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT, 256));
+				tv.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.FILL_PARENT, 256));
 				tv.setTextSize(20);
 				tv.setTypeface(Typeface.SERIF);
 				tv.setPadding(8, 8, 8, 8);
