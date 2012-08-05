@@ -27,7 +27,7 @@ def drop_child_elements(element, selectors):
             t.drop_tree()
 
 DROP_ARCHIVE_SELECTORS = ['.hlist', '.signpost-article', 'table']
-DROP_PAGE_SELECTORS = ['.floatright', 'center']
+DROP_PAGE_SELECTORS = ['.floatright', 'center', '.NavFrame', '.signpost-sidebar']
 
 EXCLUDE_PAGE_TAGS = ['dl']
 
@@ -35,7 +35,7 @@ def parse_article(title):
     doc = html.document_fromstring(content_for_title(title))
     drop_child_elements(doc, DROP_PAGE_SELECTORS)
     # Author tag
-    author_el = doc.cssselect("dd a[href*='User:']")
+    author_el = doc.cssselect("dd a[href*='User:'], .signpost-author a[href*='User:']")
     author_el = author_el[0] if len(author_el) != 0 else None
     if author_el is not None:
         author_name, author_link = unicode(author_el.text), unicode(author_el.get('href'))
