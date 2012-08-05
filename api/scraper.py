@@ -82,6 +82,7 @@ if __name__ == "__main__":
                 cur_issue = Issue(date=date)
                 session.commit()
                 dates.append(date)
+                print "Started %s" % date
             author_name, author_link, content, image_link = parse_article(page_title)
             Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
             session.commit()

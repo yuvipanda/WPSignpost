@@ -5,7 +5,6 @@ from elixir import *
 import settings
 
 metadata.bind = settings.DATABASE
-metadata.bind.echo = True
 
 class Post(Entity):
     using_options(tablename='posts')
