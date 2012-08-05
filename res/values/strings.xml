@@ -30,6 +30,19 @@
 	   	   	a {
 	   	   		text-decoration: none;
 	   	   	}
+	   	   	.thumbinner {
+	   	   		border: 1px solid #ccc;
+	   	   		background-color: #f9f9f9;
+	   	   		padding: 3px;
+	   	   		margin: 0px auto;
+	   	   	}
+	   	   	.thumb .magnify {
+	   	   		display: none;
+	   	   	}
+	   	   	.thumb .thumbcaption {
+	   	   		text-align: center;
+	   	   	}
+	   	   		
 	   	</style>
 	    	<a href="%s"><h1>%s</h1></a>
 	]]>
