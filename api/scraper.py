@@ -27,13 +27,12 @@ def drop_child_elements(element, selectors):
             t.drop_tree()
 
 DROP_ARCHIVE_SELECTORS = ['.hlist', '.signpost-article', 'table']
-DROP_PAGE_SELECTORS = ['.floatright', 'center', '.NavFrame', '.signpost-sidebar', '.signpost-comments']
+DROP_PAGE_SELECTORS = ['.floatright', 'center', '.NavFrame', '.signpost-sidebar', '.signpost-comments', '.signpost-byline']
 
 EXCLUDE_PAGE_TAGS = ['dl']
 
 def parse_article(title):
     doc = html.document_fromstring(content_for_title(title))
-    drop_child_elements(doc, DROP_PAGE_SELECTORS)
     # Author tag
     author_el = doc.cssselect("dd a[href*='User:'], .signpost-author a[href*='User:']")
     author_el = author_el[0] if len(author_el) != 0 else None
@@ -49,6 +48,7 @@ def parse_article(title):
         print image 
     else:
         image = None
+    drop_child_elements(doc, DROP_PAGE_SELECTORS)
     title = doc.cssselect('h2')[0]
     el = title.getnext()
     contents = u''
@@ -58,29 +58,30 @@ def parse_article(title):
         el = el.getnext()
     return (author_name, author_link, contents, image)
 
-from db import *
+if __name__ == "__main__":
+    from db import *
 
-setup_all()
-create_all()
+    setup_all()
+    create_all()
 
-dates = []
+    dates = []
 
-cur_issue = None
+    cur_issue = None
 
-for year in xrange(START_YEAR, CUR_YEAR + 1):
-    doc = html.document_fromstring(content_for_title(title_for_year(year)))
-    drop_child_elements(doc, DROP_ARCHIVE_SELECTORS)
-    articles = doc.cssselect('li a')
-    for article in articles:
-        title = html.tostring(article, method='text', encoding='utf-8')
-        page_title = article.get('href').replace('/wiki/', '')
-        permalink = "http://en.wikipedia.org/wiki/" + page_title
-        article_title = article.text_content()
-        date = parser.parse(page_title.split('/')[1])
-        if date not in dates:
-            cur_issue = Issue(date=date)
+    for year in xrange(START_YEAR, CUR_YEAR + 1):
+        doc = html.document_fromstring(content_for_title(title_for_year(year)))
+        drop_child_elements(doc, DROP_ARCHIVE_SELECTORS)
+        articles = doc.cssselect('li a')
+        for article in articles:
+            title = html.tostring(article, method='text', encoding='utf-8')
+            page_title = article.get('href').replace('/wiki/', '')
+            permalink = "http://en.wikipedia.org/wiki/" + page_title
+            article_title = article.text_content()
+            date = parser.parse(page_title.split('/')[1])
+            if date not in dates:
+                cur_issue = Issue(date=date)
+                session.commit()
+                dates.append(date)
+            author_name, author_link, content, image_link = parse_article(page_title)
+            Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
             session.commit()
-            dates.append(date)
-        author_name, author_link, content, image_link = parse_article(page_title)
-        Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-        session.commit()
