@@ -29,7 +29,7 @@ def drop_child_elements(element, selectors):
 DROP_ARCHIVE_SELECTORS = ['.hlist', '.signpost-article', 'table']
 DROP_PAGE_SELECTORS = ['.floatright', 'center', '.NavFrame', '.signpost-sidebar', '.signpost-comments', '.signpost-byline']
 
-EXCLUDE_PAGE_TAGS = ['dl']
+EXCLUDE_PAGE_TAGS = []
 
 def parse_article(title):
     doc = html.document_fromstring(content_for_title(title))
