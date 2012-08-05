@@ -2,8 +2,9 @@ import json
 import time
 
 from elixir import *
+import settings
 
-metadata.bind = 'sqlite:///posts.sqlite'
+metadata.bind = settings.DATABASE
 metadata.bind.echo = True
 
 class Post(Entity):
