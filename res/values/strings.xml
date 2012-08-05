@@ -2,7 +2,7 @@
 
     <string name="app_name">WPSignpost</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">The Signpost</string>
+    <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
 	<string name="post_prefix" formatted="false"><![CDATA[
 	    <style>
