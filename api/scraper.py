@@ -73,25 +73,22 @@ if __name__ == "__main__":
 
     cur_issue = None
 
-    issues = ['Wikipedia:' + issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
-
+    issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
     for issue in issues:
+        print issue
         date = parser.parse(issue.split('/')[-1])
         if Issue.query.filter_by(date=date).count() != 0:
             print "Skipping %s" % date
             continue
         cur_issue = Issue(date=date)
 
-        doc = html.document_fromstring(content_for_title(issue))
-        drop_child_elements(doc, DROP_ARCHIVE_SELECTORS)
-        articles = doc.cssselect('li a')
-
+        articles = [article for article in get_subpages("Wikipedia_Signpost/" + date.strftime("%Y-%m-%d"), 4) if len(article.split('/')) > 2]
         for article in articles:
-            title = html.tostring(article, method='text', encoding='utf-8')
-            page_title = article.get('href').replace('/wiki/', '')
+            title = article.split('/')[-1]
+            page_title = article
             permalink = "http://en.wikipedia.org/wiki/" + page_title
-            article_title = article.text_content()
             author_name, author_link, content, image_link = parse_article(page_title)
-            Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
+            Post(permalink=permalink, title=title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
+            print title
         session.commit()
         print "Done %s" % date
