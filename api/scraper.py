@@ -77,6 +77,9 @@ if __name__ == "__main__":
 
     for issue in issues:
         date = parser.parse(issue.split('/')[-1])
+        if Issue.query.filter_by(date=date).count() != 0:
+            print "Skipping %s" % date
+            continue
         cur_issue = Issue(date=date)
 
         doc = html.document_fromstring(content_for_title(issue))
