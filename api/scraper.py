@@ -38,17 +38,20 @@ def parse_article(title):
     author_el = author_el[0] if len(author_el) != 0 else None
     if author_el is not None:
         author_name, author_link = unicode(author_el.text), unicode(author_el.get('href'))
-        author_el.drop_tree()
+        author_parent = author_el.xpath("ancestor::dl")
+        print author_parent
+        if author_parent:
+            author_parent[0].drop_tree()
     else:
         author_name = author_link = u'Unknown'
 
+    drop_child_elements(doc, DROP_PAGE_SELECTORS)
     images = doc.cssselect('img')
     if images:
         image = images[0].get('src')
         print image 
     else:
         image = None
-    drop_child_elements(doc, DROP_PAGE_SELECTORS)
     title = doc.cssselect('h2')[0]
     el = title.getnext()
     contents = u''
