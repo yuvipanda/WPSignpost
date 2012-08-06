@@ -8,6 +8,7 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 import android.net.http.AndroidHttpClient;
+import android.util.Log;
 
 import de.mastacode.http.Http;
 
@@ -28,8 +29,8 @@ public class SignpostAPI {
 		return issue;
 	}
 	
-	public ArrayList<Issue> getAllIssues() throws Exception {
-		String dataString = Http.get(host + "/issues").use(client).asString();
+	public ArrayList<Issue> getIssues(int offset) throws Exception {
+		String dataString = Http.get(host + "/issues/" + offset).use(client).asString();
 		JSONArray issues = (JSONArray)json.parse(dataString);
  		ArrayList<Issue> returnData = new ArrayList<Issue>();
 		for(Object issue : issues) {
@@ -49,6 +50,8 @@ public class SignpostAPI {
 		
 		ArrayList<Post> posts = new ArrayList<Post>();
 		JSONArray postsData = (JSONArray)json.parse(dataString);
+		   Log.d("API", "Length is " + postsData.size());
+
 		for(Object postData : postsData) {
 			Post p = Post.fromJSON((JSONObject)postData);
 			posts.add(p);

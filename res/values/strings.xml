@@ -1,10 +1,11 @@
 <resources>
 
     <string name="app_name">WPSignpost</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_archives">Archives</string>
     <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
-	<string name="post_prefix" formatted="false"><![CDATA[
+    <string name="post_prefix" formatted="false">
+<![CDATA[
 	    <style>
 	   	    body {
 	   	    	font-family: Roboto, sans-serif;
@@ -46,6 +47,7 @@
 	   	</style>
 	    	<a href="%s"><h1>%s</h1></a>
 	]]>
-	    
-	</string>
+    </string>
+    <string name="title_activity_issue_list">Past Issues</string>
+
 </resources>

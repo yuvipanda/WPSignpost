@@ -1,5 +1,6 @@
 package in.yuvi.wpsignpost.api;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Date;
@@ -26,5 +27,10 @@ public class Issue implements Serializable {
 			posts = api.getPosts(this.id);
 		}
 		return posts;
+	}
+	
+	@Override
+	public String toString() {
+		return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(this.date);
 	}
 }

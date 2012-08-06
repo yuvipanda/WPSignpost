@@ -21,21 +21,23 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class PostsActivity extends Activity {
 
-	SignpostAPI api;
+	private SignpostAPI api;
 	private Issue issue = null;
 
 	private GridView grid;
 	
-	private class FetchIssuesTask extends AsyncTask<Object, Object, Issue> {
+	private class FetchIssuesTask extends AsyncTask<Issue, Object, Issue> {
 		@Override
-		protected Issue doInBackground(Object... params) {
-			if(issue == null) {
-			   try {
-				   issue = api.getLatestIssue();
-				   issue.fetchPosts(api);
-				} catch (Exception e) {
-					e.printStackTrace();
+		protected Issue doInBackground(Issue... params) {
+			try {
+				if(params.length > 0 && params[0] != null) {
+					issue = params[0];
+				} else {
+					issue = api.getLatestIssue();
 				}
+				issue.fetchPosts(api);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return issue;
 		}
@@ -121,10 +123,30 @@ public class PostsActivity extends Activity {
         setContentView(R.layout.activity_main);
         api = ((SignpostApp)getApplicationContext()).signpostAPI;
         grid = (GridView) findViewById(R.id.articles_grid);
+        
+        Intent intent = getIntent();
+        if(intent.hasExtra("issue")) {
+        	issue = (Issue)intent.getSerializableExtra("issue");
+        }
+        
         FetchIssuesTask t = new FetchIssuesTask();
-        t.execute();  
+        t.execute(issue);  
     }
     
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.menu_archives:
+				Intent i = new Intent(this, IssueListActivity.class);
+				startActivity(i);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 
 
 	@Override
