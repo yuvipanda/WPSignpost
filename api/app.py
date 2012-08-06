@@ -13,7 +13,7 @@ def firstIssues():
 
 @app.route('/issues/<int:offset>')
 def issues(offset=0):
-    issues = Issue.query.order_by(Issue.date.desc()).limit(10).offset(offset)
+    issues = Issue.query.order_by(Issue.date.desc()).limit(100).offset(offset)
     data = [issue.serialize() for issue in issues]
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
 
