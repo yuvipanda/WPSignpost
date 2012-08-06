@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     cur_issue = None
 
-    issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
+    issues = ['Wikipedia:' + issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
 
     for issue in issues:
         date = parser.parse(issue.split('/')[-1])
