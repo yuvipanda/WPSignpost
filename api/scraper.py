@@ -17,6 +17,10 @@ def content_for_title(title):
     text = api.get({'action': 'parse', 'page': title, 'redirects': '1', 'prop': 'text'})['parse']['text']['*']
     return text
 
+def get_subpages(prefix, namespace):
+    pages = api.get({'action': 'query', 'list': 'allpages', 'apprefix': prefix, 'apnamespace': namespace, 'aplimit': 500})['query']['allpages']
+    return [page['title'] for page in pages]
+
 def title_for_year(year):
     return 'Wikipedia:Wikipedia_Signpost/Archives/' + str(year)
 
@@ -39,7 +43,6 @@ def parse_article(title):
     if author_el is not None:
         author_name, author_link = unicode(author_el.text), unicode(author_el.get('href'))
         author_parent = author_el.xpath("ancestor::dl")
-        print author_parent
         if author_parent:
             author_parent[0].drop_tree()
     else:
@@ -49,7 +52,6 @@ def parse_article(title):
     images = doc.cssselect('img')
     if images:
         image = images[0].get('src')
-        print image 
     else:
         image = None
     title = doc.cssselect('h2')[0]
@@ -71,21 +73,22 @@ if __name__ == "__main__":
 
     cur_issue = None
 
-    for year in xrange(START_YEAR, CUR_YEAR + 1):
-        doc = html.document_fromstring(content_for_title(title_for_year(year)))
+    issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
+
+    for issue in issues:
+        date = parser.parse(issue.split('/')[-1])
+        cur_issue = Issue(date=date)
+
+        doc = html.document_fromstring(content_for_title(issue))
         drop_child_elements(doc, DROP_ARCHIVE_SELECTORS)
         articles = doc.cssselect('li a')
+
         for article in articles:
             title = html.tostring(article, method='text', encoding='utf-8')
             page_title = article.get('href').replace('/wiki/', '')
             permalink = "http://en.wikipedia.org/wiki/" + page_title
             article_title = article.text_content()
-            date = parser.parse(page_title.split('/')[1])
-            if date not in dates:
-                cur_issue = Issue(date=date)
-                session.commit()
-                dates.append(date)
-                print "Started %s" % date
             author_name, author_link, content, image_link = parse_article(page_title)
             Post(permalink=permalink, title=article_title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-            session.commit()
+        session.commit()
+        print "Done %s" % date
