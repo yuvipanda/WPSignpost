@@ -36,7 +36,7 @@ public class PostActivity extends Activity {
 			String permalink = params[0];
 			Post p = null;
 			try {
-				p = app.getPost(permalink);
+				p = app.cache.getPost(permalink);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,13 +66,26 @@ public class PostActivity extends Activity {
 		shareIntent.setType("text/plain");
 		shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
 		shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
+		
+		if(shareProvider == null) {
+			shareProvider = new ShareActionProvider(this);
+		}
 
+		// HACK: WTF?!
+		if(shareProvider == null) {
+			Menu menu = null;
+			getMenuInflater().inflate(R.menu.activity_post, menu);
+			
+			shareProvider = (ShareActionProvider) menu.findItem(
+					R.id.menu_share).getActionProvider();
+		}
 		shareProvider.setShareIntent(shareIntent);
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_post, menu);
+		
 		shareProvider = (ShareActionProvider) menu.findItem(
 				R.id.menu_share).getActionProvider();
 		return true;

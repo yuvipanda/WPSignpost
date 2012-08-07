@@ -1,8 +1,10 @@
 package in.yuvi.wpsignpost.api;
 import java.io.*;
+import java.util.concurrent.FutureTask;
+
 import org.json.simple.JSONObject;
 
-public class Post implements Serializable{
+public class Post {
 	public String title;
 	public String content;
 	public String permalink;

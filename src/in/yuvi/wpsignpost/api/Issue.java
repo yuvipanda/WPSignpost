@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import java.util.Date;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.*;
 
-public class Issue implements Serializable {
+public class Issue {
 	public Date date;
 	public long id;
+	public String permalink;
 		
 	public ArrayList<Post> posts;
 	
@@ -19,6 +21,14 @@ public class Issue implements Serializable {
 		Double timestamp = (Double)issueData.get("date") * 1000;
 		issue.date = new Date(timestamp.longValue());
 		issue.id = (Long)issueData.get("id");
+		issue.permalink = (String)issueData.get("permalink");
+		if(issueData.containsKey("posts")) {
+			issue.posts = new ArrayList<Post>();
+			JSONArray posts = (JSONArray)issueData.get("posts");
+			for(Object p : posts) {
+				issue.posts.add(Post.fromJSON((JSONObject)p));
+			}
+		}
 		return issue;
 	}
 	

@@ -1,6 +1,7 @@
 package in.yuvi.wpsignpost;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -25,18 +26,15 @@ public class PostsActivity extends Activity {
 	private SignpostApp app;
 	private GridView grid;
 	
-	private class FetchIssuesTask extends AsyncTask<Issue, Object, Issue> {
+	private class FetchIssuesTask extends AsyncTask<String, Object, Issue> {
 		@Override
-		protected Issue doInBackground(Issue... params) {
+		protected Issue doInBackground(String... params) {
 			try {
 				if(params.length > 0 && params[0] != null) {
-					issue = params[0];
+					String permalink = params[0];
+					issue = app.cache.getIssue(permalink);
 				} else {
-					issue = app.api.getLatestIssue();
-				}
-				issue.fetchPosts(app.api);
-				for(Post p : issue.posts) {
-					app.addPost(p);
+					issue = app.cache.getLatestIssue();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -126,13 +124,14 @@ public class PostsActivity extends Activity {
         app = ((SignpostApp)getApplicationContext());
         grid = (GridView) findViewById(R.id.articles_grid);
         
+        String permalink = null;
         Intent intent = getIntent();
-        if(intent.hasExtra("issue")) {
-        	issue = (Issue)intent.getSerializableExtra("issue");
+        if(intent.hasExtra(Intent.EXTRA_TEXT)) {
+        	permalink = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
         
         FetchIssuesTask t = new FetchIssuesTask();
-        t.execute(issue);  
+        t.execute(permalink);  
     }
     
 
@@ -149,18 +148,22 @@ public class PostsActivity extends Activity {
 		}
 	}
 
-
-
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		issue = (Issue)savedInstanceState.getSerializable("issue");	
+		String permalink = savedInstanceState.getString("permalink");
+		try {
+			issue = app.cache.getIssue(permalink);
+		} catch (Exception e) {
+			// Network issue, do something?
+			e.printStackTrace();
+		}	
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("issue", issue);
+		outState.putString("permalink", issue.permalink);
 	}
 
 	@Override

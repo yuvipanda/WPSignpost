@@ -2,6 +2,8 @@ package in.yuvi.wpsignpost.api;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import org.apache.http.client.HttpClient;
 import org.json.simple.*;
@@ -50,7 +52,6 @@ public class SignpostAPI {
 		
 		ArrayList<Post> posts = new ArrayList<Post>();
 		JSONArray postsData = (JSONArray)json.parse(dataString);
-		   Log.d("API", "Length is " + postsData.size());
 
 		for(Object postData : postsData) {
 			Post p = Post.fromJSON((JSONObject)postData);
@@ -59,6 +60,26 @@ public class SignpostAPI {
 		
 		return posts;
 	}
+	
+	public Issue getIssue(String permalink) throws Exception {
+		String dataString = Http.get(host + "/issue/permalink/" + permalink).use(client).asString();
+		return makeIssue(json.parse(dataString));
+	}
+	
+	ArrayList<Post> getPosts(String permalink) throws Exception {
+		String dataString = Http.get(host + "/posts/permalink/" + permalink).use(client).asString();
+		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		JSONArray postsData = (JSONArray)json.parse(dataString);
+
+		for(Object postData : postsData) {
+			Post p = Post.fromJSON((JSONObject)postData);
+			posts.add(p);
+		}
+		
+		return posts;
+	}
+	
 	
 	public Post getPost(long id) throws Exception {
 		String dataString = Http.get(host + "/post/" + id).use(client).asString();
