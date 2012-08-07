@@ -64,5 +64,10 @@ public class SignpostAPI {
 		String dataString = Http.get(host + "/post/" + id).use(client).asString();
 		return Post.fromJSON((JSONObject) json.parse(dataString));
 	}
+	
+	public Post getPost(String permalink) throws Exception {
+		String dataString = Http.get(host + "/post/permalink/" + permalink).use(client).asString();
+		return Post.fromJSON((JSONObject) json.parse(dataString));
+	}
 		
 }

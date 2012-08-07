@@ -18,7 +18,7 @@ import android.support.v4.app.NavUtils;
 public class PostActivity extends Activity {
 	private WebView webview;
 	private ShareActionProvider shareProvider;
-	private SignpostAPI api;
+	private SignpostApp app;
 	
 	private class PostWebViewClient extends WebViewClient {
 		@Override
@@ -29,13 +29,14 @@ public class PostActivity extends Activity {
 		}
 	}
 
-	private class FetchPostTask extends AsyncTask<Post, Object, Post> {
+	private class FetchPostTask extends AsyncTask<String, Object, Post> {
 
 		@Override
-		protected Post doInBackground(Post... params) {
-			Post p = params[0];
+		protected Post doInBackground(String... params) {
+			String permalink = params[0];
+			Post p = null;
 			try {
-				p.fetchContent(api);
+				p = app.getPost(permalink);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -46,15 +47,19 @@ public class PostActivity extends Activity {
 		@Override
 		protected void onPostExecute(Post result) {
 			super.onPostExecute(result);
-			setupShareFunction(result);
-			String prefix = String.format(getString(R.string.post_prefix),
-					result.permalink, result.title);
-			String content = prefix + result.content;
-			webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
-					"text/html", "utf-8", null);
-		}
-		
+			displayPost(result);
+		}	
 	}
+	
+	private void displayPost(Post p) {
+		setupShareFunction(p);
+		String prefix = String.format(getString(R.string.post_prefix),
+				p.permalink, p.title);
+		String content = prefix + p.content;
+		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
+				"text/html", "utf-8", null);
+	}
+	
 	private void setupShareFunction(Post post) {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setAction(Intent.ACTION_SEND);
@@ -77,7 +82,7 @@ public class PostActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 				
-        api = ((SignpostApp)getApplicationContext()).signpostAPI;
+        app = ((SignpostApp)getApplicationContext());
 
 		webview = new WebView(this);
 		webview.setWebViewClient(new PostWebViewClient());
@@ -87,14 +92,14 @@ public class PostActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		Post post = (Post) intent.getExtras().get("post");
-		setCurrentPost(post);
+		String permalink = (String) intent.getExtras().get(Intent.EXTRA_TEXT);
+		showPostForPermalink(permalink);
 		
 	}
 
-	private void setCurrentPost(Post post) {
+	private void showPostForPermalink(String permalink) {
 		FetchPostTask task = new FetchPostTask();
-		task.execute(post);
+		task.execute(permalink);
 	}
 	
 	@Override

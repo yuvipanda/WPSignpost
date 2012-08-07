@@ -21,9 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class PostsActivity extends Activity {
 
-	private SignpostAPI api;
 	private Issue issue = null;
-
+	private SignpostApp app;
 	private GridView grid;
 	
 	private class FetchIssuesTask extends AsyncTask<Issue, Object, Issue> {
@@ -33,9 +32,12 @@ public class PostsActivity extends Activity {
 				if(params.length > 0 && params[0] != null) {
 					issue = params[0];
 				} else {
-					issue = api.getLatestIssue();
+					issue = app.api.getLatestIssue();
 				}
-				issue.fetchPosts(api);
+				issue.fetchPosts(app.api);
+				for(Post p : issue.posts) {
+					app.addPost(p);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -59,7 +61,7 @@ public class PostsActivity extends Activity {
 				Post p = (Post) parent.getItemAtPosition(position);
 				Intent i = new Intent(parent.getContext(),
 						PostActivity.class);
-				i.putExtra("post", p);
+				i.putExtra(Intent.EXTRA_TEXT, p.permalink);
 				startActivity(i);
 			}
 		});
@@ -121,7 +123,7 @@ public class PostsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        api = ((SignpostApp)getApplicationContext()).signpostAPI;
+        app = ((SignpostApp)getApplicationContext());
         grid = (GridView) findViewById(R.id.articles_grid);
         
         Intent intent = getIntent();
