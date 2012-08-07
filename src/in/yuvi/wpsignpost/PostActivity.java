@@ -17,7 +17,6 @@ import android.support.v4.app.NavUtils;
 
 public class PostActivity extends Activity {
 	private WebView webview;
-	private Post post;
 	private ShareActionProvider shareProvider;
 	private SignpostAPI api;
 	
@@ -49,8 +48,8 @@ public class PostActivity extends Activity {
 			super.onPostExecute(result);
 			setupShareFunction(result);
 			String prefix = String.format(getString(R.string.post_prefix),
-					post.permalink, post.title);
-			String content = prefix + post.content;
+					result.permalink, result.title);
+			String content = prefix + result.content;
 			webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
 					"text/html", "utf-8", null);
 		}
@@ -83,16 +82,21 @@ public class PostActivity extends Activity {
 		webview = new WebView(this);
 		webview.setWebViewClient(new PostWebViewClient());
 		webview.getSettings().setBuiltInZoomControls(true);
+		webview.getSettings().setDisplayZoomControls(false);
 		setContentView(webview);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		post = (Post) intent.getExtras().get("post");
+		Post post = (Post) intent.getExtras().get("post");
+		setCurrentPost(post);
 		
+	}
+
+	private void setCurrentPost(Post post) {
 		FetchPostTask task = new FetchPostTask();
 		task.execute(post);
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
