@@ -33,5 +33,11 @@ def post(post_id):
     post = Post.query.filter_by(id=post_id).one()
     return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
 
+@app.route('/post/permalink/<path:permalink>')
+def post_permalink(permalink):
+    print permalink
+    post = Post.query.filter_by(permalink=permalink).one()
+    return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
+
 if __name__ == '__main__':
     app.run()
