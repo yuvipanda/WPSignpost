@@ -46,9 +46,6 @@
 	   	   	.thumb .thumbcaption {
 	   	   		text-align: center;
 	   	   	}
-	   	   	dd {
-	   	   		margin-left: 0px;
-	   	   	}
 	   	   		
 	   	</style>
 	    	<a href="%s"><h1>%s</h1></a>
