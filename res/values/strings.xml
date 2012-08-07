@@ -31,6 +31,9 @@
 	   	   	a {
 	   	   		text-decoration: none;
 	   	   	}
+	   	   	.thumb {
+	   	   		overflow-y: scroll;
+	   	   	}
 	   	   	.thumbinner {
 	   	   		border: 1px solid #ccc;
 	   	   		background-color: #f9f9f9;
