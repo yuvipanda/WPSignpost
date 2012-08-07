@@ -14,7 +14,8 @@ api = MWApi('http://en.wikipedia.org')
 
 def content_for_title(title):
     title = urllib2.unquote(title)
-    text = api.get({'action': 'parse', 'page': title, 'redirects': '1', 'prop': 'text'})['parse']['text']['*']
+    data = api.get({'action': 'parse', 'page': title, 'redirects': '1', 'prop': 'text'})['parse']
+    text = data['text']['*']
     return text
 
 def get_subpages(prefix, namespace):
@@ -61,7 +62,8 @@ def parse_article(title):
         if el.tag not in EXCLUDE_PAGE_TAGS:
             contents += html.tostring(el, encoding=unicode)
         el = el.getnext()
-    return (author_name, author_link, contents, image)
+    title_string = title.text_content()
+    return (title_string, author_name, author_link, contents, image)
 
 if __name__ == "__main__":
     from db import *
@@ -82,13 +84,20 @@ if __name__ == "__main__":
             continue
         cur_issue = Issue(date=date)
 
-        articles = [article for article in get_subpages("Wikipedia_Signpost/" + date.strftime("%Y-%m-%d"), 4) if len(article.split('/')) > 2]
+        doc = html.document_fromstring(content_for_title(issue))
+        article_elements = doc.cssselect("li a, .signpost-archive a")
+        articles = [article.get("title") for article in article_elements]
         for article in articles:
-            title = article.split('/')[-1]
             page_title = article
             permalink = "http://en.wikipedia.org/wiki/" + page_title
-            author_name, author_link, content, image_link = parse_article(page_title)
+            print permalink
+            try:
+                title, author_name, author_link, content, image_link = parse_article(page_title)
+            except Exception as e:
+                if e.message == "Redirects found! KITTENS KILLED!":
+                    continue
+                else:
+                    raise
             Post(permalink=permalink, title=title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-            print title
         session.commit()
         print "Done %s" % date
