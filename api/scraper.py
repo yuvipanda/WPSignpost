@@ -89,7 +89,7 @@ if __name__ == "__main__":
         articles = [article.get("title") for article in article_elements]
         for article in articles:
             page_title = article
-            permalink = "http://en.wikipedia.org/wiki/" + page_title
+            permalink = "en.wikipedia.org/wiki/" + page_title
             print permalink
             try:
                 title, author_name, author_link, content, image_link = parse_article(page_title)
