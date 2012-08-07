@@ -39,5 +39,19 @@ def post_permalink(permalink):
     post = Post.query.filter_by(permalink=permalink).one()
     return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
 
+@app.route('/posts/permalink/<path:permalink>')
+def posts_permalink(permalink):
+    issue = Issue.query.filter_by(permalink=permalink).one()
+    data = [post.serialize(True) for post in issue.posts]
+    return (json.dumps(data), 200, {'Content-Type': 'application/json'})
+
+@app.route('/issue/permalink/<path:permalink>')
+def issue_permalink(permalink):
+    issue = Issue.query.filter_by(permalink=permalink).one()
+    posts = [post.serialize(True) for post in issue.posts]
+    data = issue.serialize()
+    data['posts'] = posts
+    return (json.dumps(data), 200, {'Content-Type': 'application/json'})
+
 if __name__ == '__main__':
     app.run()

@@ -34,11 +34,13 @@ class Issue(Entity):
     using_options(tablename='issues')
 
     date = Field(DateTime)
+    permalink = Field(Unicode(255))
     posts = OneToMany('Post')
 
 
     def serialize(self):
         return {
             'id': self.id,
-            'date': time.mktime(self.date.timetuple())
+            'date': time.mktime(self.date.timetuple()),
+            'permalink': self.permalink
         }

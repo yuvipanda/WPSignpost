@@ -82,11 +82,11 @@ if __name__ == "__main__":
         if Issue.query.filter_by(date=date).count() != 0:
             print "Skipping %s" % date
             continue
-        cur_issue = Issue(date=date)
+        cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
 
         doc = html.document_fromstring(content_for_title(issue))
         article_elements = doc.cssselect("li a, .signpost-archive a")
-        articles = [article.get("title") for article in article_elements]
+        articles = [article.get("href").replace("/wiki/", "") for article in article_elements]
         for article in articles:
             page_title = article
             permalink = "en.wikipedia.org/wiki/" + page_title
