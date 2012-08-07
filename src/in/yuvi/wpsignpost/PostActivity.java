@@ -82,6 +82,7 @@ public class PostActivity extends Activity {
 
 		webview = new WebView(this);
 		webview.setWebViewClient(new PostWebViewClient());
+		webview.getSettings().setBuiltInZoomControls(true);
 		setContentView(webview);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
