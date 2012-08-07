@@ -6,16 +6,23 @@ import in.yuvi.wpsignpost.api.Post;
 import in.yuvi.wpsignpost.api.SignpostAPI;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.*;
-import android.widget.ShareActionProvider;
 import android.support.v4.app.NavUtils;
 
-public class PostActivity extends Activity {
+
+import com.actionbarsherlock.*;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.*;
+import com.actionbarsherlock.app.*;
+import android.support.v4.widget.*;
+import android.support.v4.view.*;
+
+public class PostActivity extends SherlockActivity {
 	private WebView webview;
 	private ShareActionProvider shareProvider;
 	private SignpostApp app;
@@ -67,25 +74,20 @@ public class PostActivity extends Activity {
 		shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
 		shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
 		
-		if(shareProvider == null) {
-			shareProvider = new ShareActionProvider(this);
-		}
-
 		// HACK: WTF?!
 		if(shareProvider == null) {
-			Menu menu = null;
-			getMenuInflater().inflate(R.menu.activity_post, menu);
-			
 			shareProvider = (ShareActionProvider) menu.findItem(
 					R.id.menu_share).getActionProvider();
 		}
 		shareProvider.setShareIntent(shareIntent);
 	}
 	
+	private Menu menu;
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_post, menu);
-		
+		getSupportMenuInflater().inflate(R.menu.activity_post, menu);
+		this.menu = menu;
 		shareProvider = (ShareActionProvider) menu.findItem(
 				R.id.menu_share).getActionProvider();
 		return true;
@@ -99,10 +101,13 @@ public class PostActivity extends Activity {
 
 		webview = new WebView(this);
 		webview.setWebViewClient(new PostWebViewClient());
-		webview.getSettings().setBuiltInZoomControls(true);
-		webview.getSettings().setDisplayZoomControls(false);
+		if(Build.VERSION.SDK_INT >= 11) {
+			// No sane way to give people touchZoom without the retarded -/+ controls on pre-honeycomb Android
+			webview.getSettings().setBuiltInZoomControls(true);
+			webview.getSettings().setDisplayZoomControls(false);
+		}
 		setContentView(webview);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
 		String permalink = (String) intent.getExtras().get(Intent.EXTRA_TEXT);

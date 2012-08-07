@@ -14,13 +14,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
-import android.view.*;
 import android.view.View.*;
+import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.*;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.*;
+import com.actionbarsherlock.app.*;
+import android.support.v4.widget.*;
+import android.support.v4.view.*;
 
-public class PostsActivity extends Activity {
+public class PostsActivity extends SherlockActivity {
 
 	private Issue issue = null;
 	private SignpostApp app;
@@ -168,7 +175,7 @@ public class PostsActivity extends Activity {
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
 

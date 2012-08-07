@@ -10,15 +10,21 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.CursorAdapter;
 
-public class IssueListActivity extends ListActivity {
+import com.actionbarsherlock.*;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.*;
+import com.actionbarsherlock.app.*;
+import android.support.v4.widget.*;
+import android.support.v4.view.*;
+
+public class IssueListActivity extends SherlockListActivity {
 
 	private ArrayAdapter<Issue> listAdapter;
 	private SignpostApp app;
@@ -40,7 +46,9 @@ public class IssueListActivity extends ListActivity {
 		@Override
 		protected void onPostExecute(ArrayList<Issue> result) {
 			super.onPostExecute(result);
-			listAdapter.addAll(result);
+			for(Issue i: result) {
+				listAdapter.add(i); // Backwards compat, do not use addAll < sdk 11
+			}
 			listAdapter.notifyDataSetChanged();
 		}		
 	}
@@ -49,7 +57,7 @@ public class IssueListActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issue_list);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listAdapter = new ArrayAdapter<Issue>(this, android.R.layout.simple_list_item_1);
         app = ((SignpostApp)getApplicationContext());
         
@@ -73,7 +81,7 @@ public class IssueListActivity extends ListActivity {
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_issue_list, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_issue_list, menu);
         return true;
     }
 

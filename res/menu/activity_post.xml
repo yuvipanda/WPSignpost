@@ -4,7 +4,8 @@
         android:title="share"
         android:icon="@android:drawable/ic_menu_share"
         android:showAsAction="ifRoom"
-        android:actionProviderClass="android.widget.ShareActionProvider">
+        android:enabled="true"
+        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider">
     </item>
 </menu>
 
