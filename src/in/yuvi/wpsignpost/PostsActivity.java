@@ -29,13 +29,14 @@ import android.support.v4.view.*;
 
 public class PostsActivity extends SherlockActivity {
 
-	private Issue issue = null;
+	private String currentPermalink = null;
 	private SignpostApp app;
 	private GridView grid;
 	
 	private class FetchIssuesTask extends AsyncTask<String, Object, Issue> {
 		@Override
 		protected Issue doInBackground(String... params) {
+			Issue issue = null;
 			try {
 				if(params.length > 0 && params[0] != null) {
 					String permalink = params[0];
@@ -70,6 +71,7 @@ public class PostsActivity extends SherlockActivity {
 				startActivity(i);
 			}
 		});
+		currentPermalink = issue.permalink;
 	}
 	
 	private class PostsAdaptor extends BaseAdapter {
@@ -145,8 +147,6 @@ public class PostsActivity extends SherlockActivity {
         FetchIssuesTask t = new FetchIssuesTask();
         t.execute(permalink);  
     }
-    
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -163,7 +163,9 @@ public class PostsActivity extends SherlockActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("permalink", issue.permalink);
+		if(currentPermalink != null) {
+			outState.putString("permalink", currentPermalink);
+		}
 	}
 
 	@Override
