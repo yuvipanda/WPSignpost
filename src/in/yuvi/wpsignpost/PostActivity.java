@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 import android.webkit.*;
 import android.support.v4.app.NavUtils;
 
@@ -65,6 +66,10 @@ public class PostActivity extends SherlockActivity {
 		String content = prefix + p.content;
 		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
 				"text/html", "utf-8", null);
+		
+		View loadingView = findViewById(R.id.postLoadingAnimation);
+		loadingView.setVisibility(View.GONE);
+		webview.setVisibility(View.VISIBLE);
 	}
 	
 	private void setupShareFunction(Post post) {
@@ -98,15 +103,16 @@ public class PostActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 				
         app = ((SignpostApp)getApplicationContext());
+        
+        setContentView(R.layout.activity_post);
 
-		webview = new WebView(this);
+		webview = (WebView)findViewById(R.id.postWebview);
 		webview.setWebViewClient(new PostWebViewClient());
 		if(Build.VERSION.SDK_INT >= 11) {
 			// No sane way to give people touchZoom without the retarded -/+ controls on pre-honeycomb Android
 			webview.getSettings().setBuiltInZoomControls(true);
 			webview.getSettings().setDisplayZoomControls(false);
 		}
-		setContentView(webview);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();

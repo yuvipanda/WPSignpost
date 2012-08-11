@@ -3,13 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
     <GridView
         android:id="@+id/articles_grid"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:numColumns="2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:numColumns="2"
         android:stretchMode="columnWidth"
-      />
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/issueLoadingAnimation"
+        style="@style/GenericProgressBackground" >
+
+        <ProgressBar style="@style/GenericProgressIndicator" />
+    </RelativeLayout>
+
 </RelativeLayout>

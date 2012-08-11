@@ -72,6 +72,10 @@ public class PostsActivity extends SherlockActivity {
 			}
 		});
 		currentPermalink = issue.permalink;
+		
+		View loadingView = findViewById(R.id.issueLoadingAnimation);
+		loadingView.setVisibility(View.GONE);
+		grid.setVisibility(View.VISIBLE);
 	}
 	
 	private class PostsAdaptor extends BaseAdapter {
