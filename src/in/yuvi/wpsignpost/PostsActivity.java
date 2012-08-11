@@ -132,6 +132,11 @@ public class PostsActivity extends SherlockActivity {
         grid = (GridView) findViewById(R.id.articles_grid);
         
         String permalink = null;
+
+        if(savedInstanceState != null) {
+        	permalink = savedInstanceState.getString("permalink");
+        }
+        
         Intent intent = getIntent();
         if(intent.hasExtra(Intent.EXTRA_TEXT)) {
         	permalink = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -153,18 +158,6 @@ public class PostsActivity extends SherlockActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		String permalink = savedInstanceState.getString("permalink");
-		try {
-			issue = app.cache.getIssue(permalink);
-		} catch (Exception e) {
-			// Network issue, do something?
-			e.printStackTrace();
-		}	
 	}
 
 	@Override
