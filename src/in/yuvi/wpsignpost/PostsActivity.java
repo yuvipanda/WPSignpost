@@ -109,7 +109,7 @@ public class PostsActivity extends SherlockActivity {
 				tv = new TextView(context);
 				tv.setGravity(Gravity.BOTTOM);
 				tv.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.FILL_PARENT, 256));
-				tv.setTextSize(20);
+				tv.setTextSize(14);
 				tv.setTypeface(Typeface.SERIF);
 				tv.setPadding(8, 8, 8, 8);
 				tv.setTextColor(0xFFFFFFFF);
