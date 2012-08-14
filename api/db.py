@@ -14,7 +14,7 @@ class Post(Entity):
     content = Field(UnicodeText)
     author = Field(Unicode(255))
     author_link = Field(Unicode(255))
-    image_link = Field(Unicode(255))
+    image_link = Field(Unicode(1024))
     issue = ManyToOne('Issue')
 
     def serialize(self, exclude_content=False):
