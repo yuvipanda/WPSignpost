@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.*;
+import android.widget.Button;
 import android.support.v4.app.NavUtils;
 
 
@@ -27,6 +29,7 @@ public class PostActivity extends SherlockActivity {
 	private WebView webview;
 	private ShareActionProvider shareProvider;
 	private SignpostApp app;
+	private String currentPermalink;
 	
 	private class PostWebViewClient extends WebViewClient {
 		@Override
@@ -48,15 +51,47 @@ public class PostActivity extends SherlockActivity {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			}
 			return p;
 		}
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			View loadingView = findViewById(R.id.postLoadingAnimation);
+			loadingView.setVisibility(View.VISIBLE);
+			webview.setVisibility(View.GONE);
+			View errorView = findViewById(R.id.postError);
+			errorView.setVisibility(View.GONE);
+		}
+		
+		@Override
 		protected void onPostExecute(Post result) {
 			super.onPostExecute(result);
-			displayPost(result);
+			if(result != null) {
+				displayPost(result);
+			} else {
+				showError();
+			}
 		}	
+	}
+	
+	private void showError() {
+		webview.setVisibility(View.GONE);
+		View loadingView = findViewById(R.id.postLoadingAnimation);
+		loadingView.setVisibility(View.GONE);
+		View errorView = findViewById(R.id.postError);
+		errorView.setVisibility(View.VISIBLE);
+		
+		Button retryButton = (Button)findViewById(R.id.postRetryButton);
+		retryButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FetchPostTask t = new FetchPostTask();
+				t.execute(currentPermalink); 
+			}
+		});
 	}
 	
 	private void displayPost(Post p) {
@@ -120,7 +155,7 @@ public class PostActivity extends SherlockActivity {
 		Intent intent = getIntent();
 		String permalink = (String) intent.getExtras().get(Intent.EXTRA_TEXT);
 		showPostForPermalink(permalink);
-		
+		currentPermalink = permalink;
 	}
 
 	private void showPostForPermalink(String permalink) {

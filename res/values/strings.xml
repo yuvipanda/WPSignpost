@@ -4,6 +4,8 @@
     <string name="menu_archives">Archives</string>
     <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
+    <string name="default_error_message">Couldn\'t do it. An error :(</string>
+    <string name="default_error_retry">Try again</string>
     <string name="post_prefix" formatted="false">
 <![CDATA[
 	    <style>

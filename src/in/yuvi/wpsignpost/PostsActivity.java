@@ -55,16 +55,48 @@ public class PostsActivity extends SherlockActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				return null;
 			}
 			return issue;
 		}
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			View loadingView = findViewById(R.id.issueLoadingAnimation);
+			loadingView.setVisibility(View.VISIBLE);
+			grid.setVisibility(View.GONE);
+			View errorView = findViewById(R.id.issueError);
+			errorView.setVisibility(View.GONE);
+		}
+
+		@Override
 		protected void onPostExecute(Issue result) {
 			super.onPostExecute(result);
-			showIssue(result);
+			if(result != null) {
+				showIssue(result);
+			} else {
+				showError();
+			}
 		}
 				
+	}
+	
+	private void showError() {
+		grid.setVisibility(View.GONE);
+		View loadingView = findViewById(R.id.issueLoadingAnimation);
+		loadingView.setVisibility(View.GONE);
+		View errorView = findViewById(R.id.issueError);
+		errorView.setVisibility(View.VISIBLE);
+		
+		Button retryButton = (Button)findViewById(R.id.issueRetryButton);
+		retryButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FetchIssuesTask t = new FetchIssuesTask();
+				t.execute(currentPermalink);  
+			}
+		});
 	}
 	
 	private void showIssue(Issue issue) {

@@ -17,4 +17,11 @@
         <ProgressBar style="@style/GenericProgressIndicator" />
     </RelativeLayout>
 
+    <LinearLayout android:id="@+id/postError"
+        style="@style/GenericErrorBackground">
+        <TextView android:id="@+id/postErrorMessage" style="@style/GenericErrorMessage"
+            android:text="@string/default_error_message"/>
+        <Button android:id="@+id/postRetryButton" android:text="@string/default_error_retry" style="@style/GenericErrorMessage"/>
+    </LinearLayout>
+    
 </RelativeLayout>

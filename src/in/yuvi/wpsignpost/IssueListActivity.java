@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.support.v4.app.NavUtils;
@@ -39,18 +40,48 @@ public class IssueListActivity extends SherlockListActivity {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			}
 			return issues;
 		}
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+			findViewById(android.R.id.list).setVisibility(View.GONE);
+			findViewById(R.id.issueListError).setVisibility(View.GONE);
+		}
+		
+		@Override
 		protected void onPostExecute(ArrayList<Issue> result) {
 			super.onPostExecute(result);
-			for(Issue i: result) {
-				listAdapter.add(i); // Backwards compat, do not use addAll < sdk 11
+			if( result != null) {
+				for(Issue i: result) {
+					listAdapter.add(i); // Backwards compat, do not use addAll < sdk 11
+				}
+				listAdapter.notifyDataSetChanged();
+				findViewById(android.R.id.empty).setVisibility(View.GONE);
+				findViewById(android.R.id.list).setVisibility(View.VISIBLE);
+				findViewById(R.id.issueListError).setVisibility(View.GONE);
+			} else {
+				showError();
 			}
-			listAdapter.notifyDataSetChanged();
 		}		
+	}
+	
+	private void showError() {
+		findViewById(android.R.id.empty).setVisibility(View.GONE);
+		findViewById(android.R.id.list).setVisibility(View.GONE);
+		findViewById(R.id.issueListError).setVisibility(View.VISIBLE);
+		Button retryButton = (Button)findViewById(R.id.issueListRetryButton);
+		retryButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FetchIssuesTask t = new FetchIssuesTask();
+				t.execute(0); 
+			}
+		});
 	}
 	
     @Override
