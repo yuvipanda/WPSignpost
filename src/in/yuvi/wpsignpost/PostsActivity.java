@@ -142,12 +142,6 @@ public class PostsActivity extends SherlockActivity {
 			return 0;
 		}
 
-		private int getRandomGrey() {
-			Random r = new Random();
-			int val = r.nextInt(128);
-			return Color.rgb(val, val, val);
-		}
-		
 		private class FetchImageTask extends AsyncTask<String, Object, Bitmap> {
 
 			private ImageView imageView;
@@ -207,8 +201,6 @@ public class PostsActivity extends SherlockActivity {
 			image.setTag(p.image_url);
 			
 			title.setText(p.title);
-			issueView.setBackgroundColor(getRandomGrey());
-			Log.d("API", p.image_url);
 			if(p.image_url != null) {
 				FetchImageTask imageFetch = new FetchImageTask(image, p.image_url);
 				imageFetch.execute(p.image_url);
