@@ -30,13 +30,4 @@ public class Post {
 
 		return p;
 	}
-
-	public String fetchContent(SignpostAPI api) throws Exception {
-		if(this.content == null) {
-			Post p = api.getPost(this.id);
-			this.content = p.content;
-		}
-		return this.content;
-	}
-
 }

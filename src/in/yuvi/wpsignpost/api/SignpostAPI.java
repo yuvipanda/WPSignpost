@@ -47,43 +47,9 @@ public class SignpostAPI {
 		return makeIssue(json.parse(dataString));
 	}
 	
-	ArrayList<Post> getPosts(long issueId) throws Exception {
-		String dataString = Http.get(host + "/posts/" + issueId).use(client).asString();
-		
-		ArrayList<Post> posts = new ArrayList<Post>();
-		JSONArray postsData = (JSONArray)json.parse(dataString);
-
-		for(Object postData : postsData) {
-			Post p = Post.fromJSON((JSONObject)postData);
-			posts.add(p);
-		}
-		
-		return posts;
-	}
-	
 	public Issue getIssue(String permalink) throws Exception {
 		String dataString = Http.get(host + "/issue/permalink/" + permalink).use(client).asString();
 		return makeIssue(json.parse(dataString));
-	}
-	
-	ArrayList<Post> getPosts(String permalink) throws Exception {
-		String dataString = Http.get(host + "/posts/permalink/" + permalink).use(client).asString();
-		
-		ArrayList<Post> posts = new ArrayList<Post>();
-		JSONArray postsData = (JSONArray)json.parse(dataString);
-
-		for(Object postData : postsData) {
-			Post p = Post.fromJSON((JSONObject)postData);
-			posts.add(p);
-		}
-		
-		return posts;
-	}
-	
-	
-	public Post getPost(long id) throws Exception {
-		String dataString = Http.get(host + "/post/" + id).use(client).asString();
-		return Post.fromJSON((JSONObject) json.parse(dataString));
 	}
 	
 	public Post getPost(String permalink) throws Exception {

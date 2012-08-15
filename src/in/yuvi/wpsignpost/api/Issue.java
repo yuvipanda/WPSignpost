@@ -32,13 +32,6 @@ public class Issue {
 		return issue;
 	}
 	
-	public ArrayList<Post> fetchPosts(SignpostAPI api) throws Exception {
-		if( posts == null ) {
-			posts = api.getPosts(this.id);
-		}
-		return posts;
-	}
-	
 	@Override
 	public String toString() {
 		return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(this.date);
