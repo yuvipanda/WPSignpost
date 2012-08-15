@@ -22,7 +22,11 @@ public class Post {
 		p.permalink = (String)postData.get("permalink");
 		p.author_name = (String)postData.get("author_name");
 		p.author_link = (String)postData.get("author_link");
-		p.image_url = "http:" + (String)postData.get("image_url");
+		// Paying the price for a stupid hack
+		p.image_url = (String)postData.get("image_url");
+		if(p.image_url != null && !p.image_url.startsWith("http")) {
+			p.image_url = "http:" + p.image_url;
+		}
 
 		return p;
 	}
