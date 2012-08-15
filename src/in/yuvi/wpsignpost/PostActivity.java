@@ -73,17 +73,19 @@ public class PostActivity extends SherlockActivity {
 	}
 	
 	private void setupShareFunction(Post post) {
+		if(shareProvider == null) {
+			// Recycled view! The sharing intents have already been setup
+			// But is sortof mostly a hack. I need to figure out why menu is null
+			return;
+		}
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setAction(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
 		shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
 		shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
 		
-		// HACK: WTF?!
-		if(shareProvider == null) {
-			shareProvider = (ShareActionProvider) menu.findItem(
-					R.id.menu_share).getActionProvider();
-		}
+		shareProvider = (ShareActionProvider) menu.findItem(
+				R.id.menu_share).getActionProvider();
 		shareProvider.setShareIntent(shareIntent);
 	}
 	
