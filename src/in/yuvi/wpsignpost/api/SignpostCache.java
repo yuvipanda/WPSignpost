@@ -1,12 +1,56 @@
 package in.yuvi.wpsignpost.api;
 
+import java.io.IOException;
+import java.net.*;
 import java.util.*;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.util.LruCache;
 
 public class SignpostCache {
 	
 	private SignpostAPI api;
 	
+	private class ImagesCache extends LruCache<String, Bitmap> {
+
+		public ImagesCache(int maxSize) {
+			super(maxSize);
+		}
+
+		@Override
+		protected Bitmap create(String urlString) {
+			try {
+				URL url;
+				try {
+					url = new URL(urlString);
+				} catch (MalformedURLException e) {
+					// Really, nothing we can do here, is there?
+					return null;
+				}
+				
+				HttpURLConnection conn;
+				try {
+					conn = (HttpURLConnection) url.openConnection();
+				} catch (IOException e) {
+					// No connection, I suppose? Fall back!
+					e.printStackTrace();
+					return null;
+				}
+				try {
+					return BitmapFactory.decodeStream(conn.getInputStream());
+				} catch (IOException e) {
+					// I suppose this is both a failed connection or a malformed image
+					// Again, nothing we can do, really.
+					e.printStackTrace();
+					return null;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+	}
 	private class PostsCache extends LruCache<String, Post> {
 
 		public PostsCache(int maxSize) {
@@ -43,11 +87,17 @@ public class SignpostCache {
 	
 	private PostsCache posts;
 	private IssuesCache issues;
+	private ImagesCache images;
 	
 	public SignpostCache() {
 		api = new SignpostAPI("http://yuvi.in/signpost");
 		posts = new PostsCache(256);
 		issues = new IssuesCache(256);
+		images = new ImagesCache(256);
+	}
+	
+	public Bitmap getImage(String url) throws Exception {
+		return images.get(url);
 	}
 	
 	public Issue getLatestIssue() throws Exception {
