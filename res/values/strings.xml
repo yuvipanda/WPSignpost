@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">WPSignpost</string>
+    <string name="app_name">Signpost</string>
     <string name="menu_archives">Archives</string>
     <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
