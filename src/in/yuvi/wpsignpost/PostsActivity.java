@@ -155,7 +155,7 @@ public class PostsActivity extends SherlockActivity {
 			protected void onPostExecute(Bitmap result) {
 				super.onPostExecute(result);
 				if(result != null) {
-					if (imageView.getTag().equals(url)) {
+					if (imageView.getTag() != null && imageView.getTag().equals(url)) {
 						imageView.setImageBitmap(result);
 						imageView.setVisibility(View.VISIBLE);
 					}
