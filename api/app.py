@@ -42,13 +42,14 @@ def post_permalink(permalink):
 @app.route('/posts/permalink/<path:permalink>')
 def posts_permalink(permalink):
     issue = Issue.query.filter_by(permalink=permalink).one()
-    data = [post.serialize(True) for post in issue.posts]
+    # Hack to make the order make more sense in client. FIXME: Make this more deterministic
+    data = reversed([post.serialize(True) for post in issue.posts])
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
 
 @app.route('/issue/permalink/<path:permalink>')
 def issue_permalink(permalink):
     issue = Issue.query.filter_by(permalink=permalink).one()
-    posts = [post.serialize(True) for post in issue.posts]
+    posts = reversed([post.serialize(True) for post in issue.posts])
     data = issue.serialize()
     data['posts'] = posts
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
