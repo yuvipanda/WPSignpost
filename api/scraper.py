@@ -37,9 +37,14 @@ DROP_PAGE_SELECTORS = ['.floatright', 'center', '.NavFrame', '.signpost-sidebar'
 EXCLUDE_PAGE_TAGS = []
 
 def parse_image(doc):
-    link = doc.cssselect("a[href*='/wiki/File:'] img")
+    link = doc.cssselect("a[href*='/wiki/File:']")
     if link:
-        return link[0].get('src')
+        name = link[0].get('href').replace('/wiki/', '')
+        name = urllib2.unquote(name)
+        data = api.get({'action': 'query', 'prop': 'imageinfo', 'iiprop': 'url', 'iiurlwidth': 512, 'iiurlheight': 512, 'titles': name})['query']['pages'].values()[0]
+        if 'imageinfo' not in data:
+            return None
+        return data['imageinfo'][0]['thumburl']
     else:
         return None
 
@@ -57,7 +62,6 @@ def parse_article(title):
         author_name = author_link = u'Unknown'
 
     drop_child_elements(doc, DROP_PAGE_SELECTORS)
-    parse_image(doc)
     image = parse_image(doc)
     title = doc.cssselect('h2')[0]
     el = title.getnext()
