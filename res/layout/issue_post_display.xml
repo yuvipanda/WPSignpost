@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="256dp" 
-    android:background="@android:color/transparent"
-    >
+    android:layout_height="256dp"
+    android:background="@android:color/transparent" >
 
     <ImageView
         android:id="@+id/post_display_image"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
+        android:layout_height="fill_parent"
         android:scaleType="centerCrop"
-        />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/post_display_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:textSize="18sp" 
-        android:textColor="#FFFFFFFF"
         android:background="#AA000000"
-        android:typeface="serif"
         android:padding="10sp"
-         />
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp"
+        android:typeface="serif" />
+
+    <RelativeLayout
+        android:id="@+id/imageLoadingAnimation"
+        style="@style/GenericProgressBackground" >
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
 </FrameLayout>

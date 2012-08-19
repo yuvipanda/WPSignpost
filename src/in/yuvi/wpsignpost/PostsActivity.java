@@ -145,10 +145,12 @@ public class PostsActivity extends SherlockActivity {
 		private class FetchImageTask extends AsyncTask<String, Object, Bitmap> {
 
 			private ImageView imageView;
+			private View issueView;
 			private String url;
-			public FetchImageTask(ImageView imageView, String url) {
+			public FetchImageTask(ImageView imageView, View issueView, String url) {
 				this.imageView = imageView;
 				this.url = url;
+				this.issueView = issueView;
 			}
 			
 			@Override
@@ -159,13 +161,15 @@ public class PostsActivity extends SherlockActivity {
 						imageView.setImageBitmap(result);
 						imageView.setVisibility(View.VISIBLE);
 					}
-				}
+				} 
+				issueView.findViewById(R.id.imageLoadingAnimation).setVisibility(View.GONE);
 			}
 
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
 				imageView.setBackgroundResource(0);
+				issueView.findViewById(R.id.imageLoadingAnimation).setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -197,13 +201,18 @@ public class PostsActivity extends SherlockActivity {
 			
 			image = (ImageView)issueView.findViewById(R.id.post_display_image);
 			title = (TextView)issueView.findViewById(R.id.post_display_title);
-			image.setVisibility(View.INVISIBLE);
+			image.setVisibility(View.GONE);
+			issueView.findViewById(R.id.imageLoadingAnimation).setVisibility(View.VISIBLE);
 			image.setTag(p.image_url);
 			
 			title.setText(p.title);
 			if(p.image_url != null) {
-				FetchImageTask imageFetch = new FetchImageTask(image, p.image_url);
+				FetchImageTask imageFetch = new FetchImageTask(image, issueView, p.image_url);
 				imageFetch.execute(p.image_url);
+			} else {
+					issueView.findViewById(R.id.imageLoadingAnimation).setVisibility(View.GONE);
+					image.setImageResource(R.drawable.image_placeholder);
+					image.setVisibility(View.VISIBLE);
 			}
 			
 			return issueView;
