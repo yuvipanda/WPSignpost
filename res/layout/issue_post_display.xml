@@ -9,7 +9,7 @@
         android:id="@+id/post_display_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
-        android:scaleType="fitCenter" 
+        android:scaleType="centerCrop"
         />
 
     <TextView
