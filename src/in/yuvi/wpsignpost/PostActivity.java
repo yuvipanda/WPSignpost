@@ -126,7 +126,7 @@ public class PostActivity extends SherlockActivity {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setAction(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
-		shareIntent.putExtra(Intent.EXTRA_TEXT, post.permalink);
+		shareIntent.putExtra(Intent.EXTRA_TEXT, "https://" + post.permalink);
 		shareIntent.putExtra(Intent.EXTRA_TITLE, post.title);
 		
 		shareProvider = (ShareActionProvider) menu.findItem(
