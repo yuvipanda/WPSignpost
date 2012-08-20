@@ -7,7 +7,7 @@
     <string name="title_activity_post"></string>
     <string name="default_error_message">Couldn\'t do it. An error :(</string>
     <string name="default_error_retry">Try again</string>
-    <string name="post_prefix" formatted="false">
+    <string name="post_css" formatted="false">
 <![CDATA[
 	    <style>
 	   	    body {
@@ -22,14 +22,21 @@
 	   	    	font-family: serif;
 	   	    	display: block;
 	   	    	color: #000;
-	   	    	padding-bottom: 5px;
 	   	    	margin-top:10px;
-	   	    	border-bottom: 1px solid #000;
 	   	    	font-weight: 700;
 	   	    	text-transform: Uppercase;
+	   	    	margin-bottom: 0px;
 	   	    }
 	   	    h3 {
 	   	    	font-size: 18px;
+	   	    }
+	   	    .byline {
+	   	    	padding-bottom: 5px;
+	   	    	border-bottom: 1px solid #555;
+	   	    	color: #999;
+	   	    	font-size: 12px;
+	   	    	line-spacing: 14px;
+	   	    	margin-top: 5px;
 	   	    }
 	   	   	a {
 	   	   		text-decoration: none;
@@ -49,10 +56,21 @@
 	   	   	.thumb .thumbcaption {
 	   	   		text-align: center;
 	   	   	}
+	   	   	
+	   	   	
 	   	   		
 	   	</style>
-	    	<a href="%s"><h1>%s</h1></a>
 	]]>
+    </string>
+    <string name="post_title_html" formatted="false">
+        <![CDATA[
+        <a href="%s"><h1>%s</h1></a>
+        ]]>
+    </string>
+    <string name="post_author_html" formatted="false">
+        <![CDATA[
+        	<div class="byline">by <a href="%s">%s</a></div>
+        ]]>
     </string>
     <string name="title_activity_issue_list">Past Issues</string>
     <string name="about_version">Version 1.0</string>

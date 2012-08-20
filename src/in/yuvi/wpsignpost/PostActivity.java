@@ -1,6 +1,7 @@
 package in.yuvi.wpsignpost;
 
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import in.yuvi.wpsignpost.api.Post;
 import in.yuvi.wpsignpost.api.SignpostAPI;
@@ -96,8 +97,14 @@ public class PostActivity extends SherlockActivity {
 	
 	private void displayPost(Post p) {
 		setupShareFunction(p);
-		String prefix = String.format(getString(R.string.post_prefix),
+		String prefix = "";
+		prefix += getString(R.string.post_css);
+		prefix += String.format(getString(R.string.post_title_html),
 				p.permalink, p.title);
+		if(p.author_name != null && p.author_name.length() != 0) {
+			prefix += String.format(getString(R.string.post_author_html),
+					p.author_link, p.author_name);
+		}
 		String content = prefix + p.content;
 		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
 				"text/html", "utf-8", null);
