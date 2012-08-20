@@ -54,7 +54,7 @@ def parse_article(title):
     author_el = doc.cssselect("dd a[href*='User:'], .signpost-author a[href*='User:']")
     author_el = author_el[0] if len(author_el) != 0 else None
     if author_el is not None:
-        author_name, author_link = unicode(author_el.text), unicode(author_el.get('href'))
+        author_name, author_link = unicode(author_el.text_content()), unicode(author_el.get('href'))
         author_parent = author_el.xpath("ancestor::dl")
         if author_parent:
             author_parent[0].drop_tree()
@@ -106,6 +106,6 @@ if __name__ == "__main__":
                     continue
                 else:
                     raise
-            Post(permalink=permalink, title=title, content=content, author_name=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
+            Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
         session.commit()
         print "Done %s" % date
