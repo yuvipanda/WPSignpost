@@ -112,6 +112,9 @@ public class PostsActivity extends SherlockActivity {
 				startActivity(i);
 			}
 		});
+		
+		getActionBar().setSubtitle(issue.toString());
+		
 		currentPermalink = issue.permalink;
 		
 		View loadingView = findViewById(R.id.issueLoadingAnimation);
