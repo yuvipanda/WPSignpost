@@ -98,6 +98,7 @@ public class PostActivity extends SherlockActivity {
 	private void displayPost(Post p) {
 		setupShareFunction(p);
 		String prefix = "";
+		String postfix = "";
 		prefix += getString(R.string.post_css);
 		prefix += String.format(getString(R.string.post_title_html),
 				p.permalink, p.title);
@@ -105,7 +106,9 @@ public class PostActivity extends SherlockActivity {
 			prefix += String.format(getString(R.string.post_author_html),
 					p.author_link, p.author_name);
 		}
-		String content = prefix + p.content;
+		String article_title = p.permalink.replace("en.wikipedia.org/wiki/", "");
+		postfix += String.format(getString(R.string.post_footer_html), "/w/index.php?title=" + article_title + "&action=history");
+		String content = prefix + p.content + postfix;
 		webview.loadDataWithBaseURL("http://en.wikipedia.org", content,
 				"text/html", "utf-8", null);
 		
