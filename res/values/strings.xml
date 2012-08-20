@@ -68,7 +68,7 @@
     </string>
     <string name="post_title_html" formatted="false">
         <![CDATA[
-        <a href="%s"><h1>%s</h1></a>
+        <h1>%s</h1>
         ]]>
     </string>
     <string name="post_author_html" formatted="false">
