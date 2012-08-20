@@ -2,6 +2,7 @@
 
     <string name="app_name">Signpost</string>
     <string name="menu_archives">Archives</string>
+    <string name="menu_about">About</string>
     <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
     <string name="default_error_message">Couldn\'t do it. An error :(</string>
@@ -54,5 +55,11 @@
 	]]>
     </string>
     <string name="title_activity_issue_list">Past Issues</string>
+    <string name="about_version">Version 1.0</string>
+    <string name="about_license">Code under GPLv2. <a href="https://github.com/yuvipanda/WPSignpost">Help improve it!</a></string>
+    <string name="about_improve">Help improve this app!</string>
+    <string name="about_signpost">The Signpost is a community written and community edited newspaper, covering stories, events and reports relating to Wikipedia and the Wikimedia Foundation sister projects. A new issue is published every Monday.</string>
+    <string name="about_contribs">code by <a href="https://mediawiki.org/wiki/User:Yuvipanda">yuviyanda</a> &amp; design by <a href="https://mediawiki.org/wiki/User:Notnarayan">notnarayan</a></string>
+    <string name="title_activity_about">About Signpost</string>
 
 </resources>

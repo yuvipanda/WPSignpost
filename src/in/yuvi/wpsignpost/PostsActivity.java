@@ -246,8 +246,12 @@ public class PostsActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 			case R.id.menu_archives:
-				Intent i = new Intent(this, IssueListActivity.class);
-				startActivity(i);
+				Intent issueListIntent = new Intent(this, IssueListActivity.class);
+				startActivity(issueListIntent);
+				return true;
+			case R.id.menu_about:
+				Intent aboutIntent = new Intent(this, AboutActivity.class);
+				startActivity(aboutIntent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
