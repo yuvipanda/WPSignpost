@@ -24,11 +24,15 @@
 	   	    	color: #000;
 	   	    	margin-top:10px;
 	   	    	font-weight: 700;
-	   	    	text-transform: Uppercase;
+	   	    	text-transform: capitalize;
 	   	    	margin-bottom: 0px;
 	   	    }
 	   	    h3 {
 	   	    	font-size: 18px;
+	   	    	text-transform: capitalize;
+	   	    	color: #000;
+	   	    	font-weight: 700;
+	   	    	font-family: serif;
 	   	    }
 	   	    .byline {
 	   	    	padding-bottom: 5px;
