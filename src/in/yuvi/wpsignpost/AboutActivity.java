@@ -54,7 +54,8 @@ public class AboutActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+            	// No place in 'hierarchy', just emulate 'back' button
+            	finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
