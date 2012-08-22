@@ -24,7 +24,8 @@ class Post(Entity):
             'title': self.title,
             'author_name': self.author,
             'author_link': self.author_link,
-            'image_url': self.image_link
+            'image_url': self.image_link,
+            'issue_permalink': self.issue.permalink
         }
         if not exclude_content:
             data['content'] = self.content
