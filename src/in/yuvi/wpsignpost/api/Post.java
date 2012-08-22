@@ -1,5 +1,8 @@
 package in.yuvi.wpsignpost.api;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.FutureTask;
 
 import org.json.simple.JSONObject;
@@ -12,7 +15,7 @@ public class Post {
 	public String author_link;
 	public String image_url;
 	public long id;
-	public Issue issue;
+	public Date published;
 	
 	public static Post fromJSON(JSONObject postData) {
 		Post p = new Post();
@@ -27,7 +30,21 @@ public class Post {
 		if(p.image_url != null && !p.image_url.startsWith("http")) {
 			p.image_url = "http:" + p.image_url;
 		}
-
+		p.published = Post.parsePublishedDate(p.permalink);
+		
 		return p;
+	}
+	
+	public static Date parsePublishedDate(String permalink) {
+		SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd");
+		String dateFragment = permalink.split("/")[3];
+		try {
+			return dateParser.parse(dateFragment);
+		} catch (ParseException e) {
+			// This should never happen, and if it does, there are way bigger issues than 
+			// a date not being formatted correctly. But, what do *I* know - Java obviously
+			// knows something about the workings of this particular system that I do not
+			return null;
+		}
 	}
 }

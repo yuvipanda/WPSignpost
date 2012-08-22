@@ -121,7 +121,9 @@ public class IssueListActivity extends SherlockListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+            	// According to android guidelines - just emulate 'back'
+            	// Since this doesn't really stand anywhere in the 'hierarchy'
+            	this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

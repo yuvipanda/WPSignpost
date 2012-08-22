@@ -3,6 +3,7 @@ package in.yuvi.wpsignpost;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
+import in.yuvi.wpsignpost.api.Issue;
 import in.yuvi.wpsignpost.api.Post;
 import in.yuvi.wpsignpost.api.SignpostAPI;
 import android.net.Uri;
@@ -176,7 +177,11 @@ public class PostActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
+			// Because we might be in an error page, and current post might be null, so not using cache
+			String issuePermalink = Issue.makePermalink(Post.parsePublishedDate(currentPermalink));
+			Intent intent = new Intent(this, PostsActivity.class);
+			intent.putExtra(Intent.EXTRA_TEXT, issuePermalink);
+			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

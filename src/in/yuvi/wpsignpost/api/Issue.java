@@ -32,6 +32,11 @@ public class Issue {
 		return issue;
 	}
 	
+	public static String makePermalink(Date date) {
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		return "en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + dateFormatter.format(date);
+	}
+
 	@Override
 	public String toString() {
 		return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(this.date);
