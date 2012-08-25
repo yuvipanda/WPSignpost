@@ -3,6 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_archives"
         android:title="@string/menu_archives"
+        android:icon="@drawable/ic_archive"
         android:orderInCategory="100"
         android:showAsAction="ifRoom" />
     <item android:id="@+id/menu_about"
