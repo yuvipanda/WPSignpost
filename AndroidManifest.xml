@@ -29,24 +29,15 @@
             android:name=".PostActivity"
             android:label="@string/title_activity_post"
             android:logo="@drawable/ic_logo" android:configChanges="orientation|screenSize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="in.yuvi.wpsignpost.PostsActivity" />
         </activity>
         <activity
             android:name=".IssueListActivity"
             android:label="@string/title_activity_issue_list"
             android:logo="@drawable/ic_logo" android:configChanges="orientation|screenSize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="in.yuvi.wpsignpost.PostsActivity" />
         </activity>
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" android:configChanges="orientation|screenSize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="in.yuvi.wpsignpost.PostsActivity" />
         </activity>
     </application>
 
