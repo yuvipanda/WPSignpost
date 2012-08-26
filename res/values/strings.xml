@@ -3,6 +3,7 @@
     <string name="app_name">Signpost</string>
     <string name="menu_archives">Archives</string>
     <string name="menu_about">About</string>
+    <string name="menu_latest_issue">See latest Issue</string>
     <string name="title_activity_main">Signpost</string>
     <string name="title_activity_post"></string>
     <string name="default_error_message">Couldn\'t do it. An error :(</string>

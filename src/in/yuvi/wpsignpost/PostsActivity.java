@@ -258,6 +258,12 @@ public class PostsActivity extends SherlockActivity {
 				Intent aboutIntent = new Intent(this, AboutActivity.class);
 				startActivity(aboutIntent);
 				return true;
+			case R.id.menu_latest_issue:
+				FetchIssuesTask t = new FetchIssuesTask();
+				// Haha Java is stupid, but at least this is an actual problem
+				String nullPermalink = null;
+				t.execute(nullPermalink);  
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
