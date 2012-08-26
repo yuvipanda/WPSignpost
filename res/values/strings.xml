@@ -90,7 +90,7 @@
         ]]>
     </string>
     <string name="title_activity_issue_list">Past Issues</string>
-    <string name="about_version">Version 1.0</string>
+    <string name="about_version">Version 1.0RC2</string>
     <string name="about_license">Code under GPLv2. <a href="https://github.com/yuvipanda/WPSignpost">Help improve it!</a></string>
     <string name="about_improve">Help improve this app!</string>
     <string name="about_signpost">The Signpost is a community written and community edited newspaper, covering stories, events and reports relating to Wikipedia and the Wikimedia Foundation sister projects. A new issue is published every Monday.</string>
