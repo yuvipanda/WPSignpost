@@ -193,7 +193,7 @@ public class PostsActivity extends SherlockActivity {
 			Post p = issue.posts.get(position);
 			FrameLayout issueView;
 			ImageView image;
-			TextView title;
+			TextView title, category;
 			if(convertView == null) {
 				LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				issueView = new FrameLayout(context);
@@ -204,11 +204,13 @@ public class PostsActivity extends SherlockActivity {
 			
 			image = (ImageView)issueView.findViewById(R.id.post_display_image);
 			title = (TextView)issueView.findViewById(R.id.post_display_title);
+			category = (TextView)issueView.findViewById(R.id.post_display_category);
 			image.setVisibility(View.GONE);
 			issueView.findViewById(R.id.imageLoadingAnimation).setVisibility(View.VISIBLE);
 			image.setTag(p.image_url);
 			
 			title.setText(p.title);
+			category.setText(p.category);
 			if(p.image_url != null) {
 				FetchImageTask imageFetch = new FetchImageTask(image, issueView, p.image_url);
 				imageFetch.execute(p.image_url);

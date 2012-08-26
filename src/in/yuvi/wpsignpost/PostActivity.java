@@ -1,5 +1,6 @@
 package in.yuvi.wpsignpost;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
@@ -115,6 +116,7 @@ public class PostActivity extends SherlockActivity {
 		View loadingView = findViewById(R.id.postLoadingAnimation);
 		loadingView.setVisibility(View.GONE);
 		webview.setVisibility(View.VISIBLE);
+		
 	}
 	
 	private void setupShareFunction(Post post) {
@@ -171,6 +173,10 @@ public class PostActivity extends SherlockActivity {
 	private void showPostForPermalink(String permalink) {
 		FetchPostTask task = new FetchPostTask();
 		task.execute(permalink);
+		
+		this.setTitle(Post.parseCategory(permalink));
+		this.getActionBar().setSubtitle(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(Post.parsePublishedDate(permalink)));
+		
 	}
 	
 	@Override

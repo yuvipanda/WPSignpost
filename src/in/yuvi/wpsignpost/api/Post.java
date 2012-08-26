@@ -14,6 +14,7 @@ public class Post {
 	public String author_name;
 	public String author_link;
 	public String image_url;
+	public String category;
 	public long id;
 	public Date published;
 	
@@ -31,8 +32,14 @@ public class Post {
 			p.image_url = "http:" + p.image_url;
 		}
 		p.published = Post.parsePublishedDate(p.permalink);
-		
+	
+		p.category = Post.parseCategory(p.permalink);
 		return p;
+	}
+	
+	public static String parseCategory(String permalink) {
+		String[] urlParts = permalink.split("/");
+		return urlParts[urlParts.length - 1].replace('_', ' ');
 	}
 	
 	public static Date parsePublishedDate(String permalink) {
