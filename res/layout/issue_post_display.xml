@@ -19,23 +19,24 @@
 
         <TextView
             android:id="@+id/post_display_category"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#AA000000"
             android:textColor="#FFFFFFFF"
-            android:paddingLeft="2sp"
-            android:textSize="14sp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/post_display_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#AA000000"
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp"
-            android:paddingBottom="10sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
             android:textColor="#FFFFFFFF"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:typeface="serif" />
     </LinearLayout>
 
