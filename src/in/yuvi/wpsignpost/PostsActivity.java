@@ -113,7 +113,7 @@ public class PostsActivity extends SherlockActivity {
 			}
 		});
 		
-		getActionBar().setSubtitle(issue.toString());
+		getSupportActionBar().setSubtitle(issue.toString());
 		
 		currentPermalink = issue.permalink;
 		

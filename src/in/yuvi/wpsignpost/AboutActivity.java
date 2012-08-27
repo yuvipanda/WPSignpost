@@ -1,5 +1,10 @@
 package in.yuvi.wpsignpost;
 
+import com.actionbarsherlock.app.*;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.*;
@@ -9,7 +14,7 @@ import android.text.*;
 import android.text.method.LinkMovementMethod;
 import android.text.style.*;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends SherlockActivity {
 	
 	// I hate underlines in the links. Let's remove them the Java way (do we have a choice?)
 	private class URLSpanNoUnderline extends URLSpan {
@@ -45,7 +50,7 @@ public class AboutActivity extends Activity {
         stripUnderlines((TextView)findViewById(R.id.aboutContributors));
         stripUnderlines((TextView)findViewById(R.id.aboutLicense));
         
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

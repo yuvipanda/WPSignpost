@@ -175,7 +175,7 @@ public class PostActivity extends SherlockActivity {
 		task.execute(permalink);
 		
 		this.setTitle(Post.parseCategory(permalink));
-		this.getActionBar().setSubtitle(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(Post.parsePublishedDate(permalink)));
+		this.getSupportActionBar().setSubtitle(SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM).format(Post.parsePublishedDate(permalink)));
 		
 	}
 	
