@@ -102,7 +102,7 @@ public class PostActivity extends SherlockActivity {
 		String prefix = "";
 		String postfix = "";
 		prefix += getString(R.string.post_css);
-		prefix += String.format(getString(R.string.post_title_html), p.title);
+		prefix += String.format(getString(R.string.post_title_html), "//" + p.permalink, p.title);
 		if(p.author_name != null && p.author_name.length() != 0) {
 			prefix += String.format(getString(R.string.post_author_html),
 					p.author_link, p.author_name);
