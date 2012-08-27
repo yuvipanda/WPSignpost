@@ -17,8 +17,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".PostsActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main"
-            android:logo="@drawable/ic_logo" android:configChanges="orientation|screenSize">
+            android:logo="@drawable/ic_logo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,17 +28,21 @@
         </activity>
         <activity
             android:name=".PostActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_post"
-            android:logo="@drawable/ic_logo" android:configChanges="orientation|screenSize">
+            android:logo="@drawable/ic_logo" >
         </activity>
         <activity
             android:name=".IssueListActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_issue_list"
-            android:logo="@drawable/ic_logo" android:configChanges="orientation|screenSize">
+            android:logo="@drawable/ic_logo" >
         </activity>
         <activity
             android:name=".AboutActivity"
-            android:label="@string/title_activity_about" android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_about"
+            android:logo="@drawable/ic_logo" >
         </activity>
     </application>
 
