@@ -37,5 +37,10 @@ def issue_permalink(permalink):
     data['posts'] = posts
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
 
+@app.route('/issue/update/<date>', methods=["POST"])
+def update_issue(date):
+    from scraper import save_issue
+    return save_issue(date)
+
 if __name__ == '__main__':
     app.run()

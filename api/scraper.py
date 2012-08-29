@@ -7,6 +7,8 @@ import requests
 import urllib2
 import re
 
+from db import *
+
 START_YEAR = 2005
 CUR_YEAR = datetime.now().year
 
@@ -73,39 +75,37 @@ def parse_article(title):
     title_string = title.text_content()
     return (title_string, author_name, author_link, contents, image)
 
-if __name__ == "__main__":
-    from db import *
+def save_issue(date_string):
+    date = parser.parse(date_string)
+    if Issue.query.filter_by(date=date).count() != 0:
+        return "Skipping %s" % date
+    cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
 
+    issue = "Wikipedia:Wikipedia Signpost/Archives/" + date.strftime("%Y-%m-%d")
+    doc = html.document_fromstring(content_for_title(issue))
+    article_elements = doc.cssselect("li a, .signpost-archive a")
+    articles = [article.get("href").replace("/wiki/", "") for article in article_elements]
+    for article in articles:
+        page_title = article
+        permalink = "en.wikipedia.org/wiki/" + page_title
+        try:
+            title, author_name, author_link, content, image_link = parse_article(page_title)
+        except Exception as e:
+            if e.message == "Redirects found! KITTENS KILLED!":
+                continue
+            else:
+                print permalink
+                raise
+        Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
+    session.commit()
+    return "Done %s\n%s" % (date, "\n".join(articles))
+
+if __name__ == "__main__":
     setup_all()
     create_all()
-
-    dates = []
-
-    cur_issue = None
 
     issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
     for issue in issues:
         print issue
-        date = parser.parse(issue.split('/')[-1])
-        if Issue.query.filter_by(date=date).count() != 0:
-            print "Skipping %s" % date
-            continue
-        cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
-
-        doc = html.document_fromstring(content_for_title(issue))
-        article_elements = doc.cssselect("li a, .signpost-archive a")
-        articles = [article.get("href").replace("/wiki/", "") for article in article_elements]
-        for article in articles:
-            page_title = article
-            permalink = "en.wikipedia.org/wiki/" + page_title
-            print permalink
-            try:
-                title, author_name, author_link, content, image_link = parse_article(page_title)
-            except Exception as e:
-                if e.message == "Redirects found! KITTENS KILLED!":
-                    continue
-                else:
-                    raise
-            Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-        session.commit()
-        print "Done %s" % date
+        date = issue.split('/')[-1]
+        print save_issue(date)
