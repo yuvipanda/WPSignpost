@@ -53,5 +53,17 @@ def register_device():
     else:
         return ("No regID specified", 400) 
 
+@app.route('/device/deregister', methods=["POST"])
+def deregister_device():
+    regID = request.form['regID']
+    if regID:
+        if Device.query.filter_by(regID=regID).count() != 0:
+            device = Device.query.filter_by(regID=regID).one()
+            device.delete()
+            session.commit() 
+        return ("", 200)
+    else:
+        return ("No regID specified", 400) 
+
 if __name__ == '__main__':
     app.run()
