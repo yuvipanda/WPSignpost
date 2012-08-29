@@ -44,3 +44,8 @@ class Issue(Entity):
             'date': time.mktime(self.date.timetuple()),
             'permalink': self.permalink
         }
+
+class Device(Entity):
+    using_options(tablename='devices')
+
+    regID = Field(Unicode(1024))
