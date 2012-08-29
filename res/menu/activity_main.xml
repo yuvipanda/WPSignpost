@@ -10,10 +10,12 @@
         android:title="@string/menu_about"
         android:orderInCategory="200"
         android:showAsAction="collapseActionView"
+        android:icon="@drawable/ic_menu_info_details"
         />
     <item android:id="@+id/menu_latest_issue"
         android:title="@string/menu_latest_issue"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_menu_refresh"
         android:showAsAction="collapseActionView"
         />
 </menu>
