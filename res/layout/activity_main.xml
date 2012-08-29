@@ -12,7 +12,9 @@
         android:layout_alignParentTop="true"
         android:numColumns="1"
         android:stretchMode="columnWidth"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:listSelector="@null"
+         />
 
     <RelativeLayout
         android:id="@+id/issueLoadingAnimation"
