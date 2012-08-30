@@ -46,10 +46,12 @@ def update_issue(date):
 def register_device():
     regID = request.form['regID']
     if regID:
-        if Device.query.filter_by(regID=regID).count() != 0:
+        if Device.query.filter_by(regID=regID).count() == 0:
             device = Device(regID=regID)
             session.commit() 
-        return ("", 200)
+            return ("", 200)
+        else:
+            return ("regID already registered", 200)
     else:
         return ("No regID specified", 400) 
 
