@@ -10,6 +10,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Push notification stuff -->
+    <permission
+        android:name="in.yuvi.wpsignpost.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="in.yuvi.wpsignpost.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name="SignpostApp"
         android:icon="@drawable/ic_launcher"
@@ -26,6 +36,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="in.yuvi.wpsignpost" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMIntentService" />
+
         <activity
             android:name=".PostActivity"
             android:configChanges="orientation|screenSize"

@@ -99,5 +99,8 @@
     <string name="about_signpost">The Signpost is a community written and community edited newspaper, covering stories, events and reports relating to Wikipedia and the Wikimedia Foundation sister projects. A new issue is published every Monday.</string>
     <string name="about_contribs">code by <a href="https://mediawiki.org/wiki/User:Yuvipanda">yuviyanda</a> &amp; design by <a href="https://mediawiki.org/wiki/User:Notnarayan">notnarayan</a></string>
     <string name="title_activity_about">About Signpost</string>
-
+    
+    <string name="notification_new_issue_title">New Signpost issue!</string>
+    <string name="notification_new_issue_text">%1$s: %2$s</string>
+    <string name="notification_new_issue_ticker">%1$s Signpost: %2$s</string>
 </resources>

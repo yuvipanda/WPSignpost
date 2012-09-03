@@ -89,8 +89,8 @@ public class SignpostCache {
 	private IssuesCache issues;
 	private ImagesCache images;
 	
-	public SignpostCache() {
-		api = new SignpostAPI("http://yuvi.in/signpost");
+	public SignpostCache(SignpostAPI api) {
+	    this.api = api;
 		posts = new PostsCache(256);
 		issues = new IssuesCache(256);
 		images = new ImagesCache(256);

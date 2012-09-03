@@ -56,5 +56,12 @@ public class SignpostAPI {
 		String dataString = Http.get(host + "/post/permalink/" + permalink).use(client).asString();
 		return Post.fromJSON((JSONObject) json.parse(dataString));
 	}
+	
+	public void registerDevice(String regID) throws Exception {
+	    Http.post(host + "/device/register").use(client).data("regID", regID).asString();
+	}
+	public void deregisterDevice(String regID) throws Exception {
+	    Http.post(host + "/device/deregister").use(client).data("regID", regID).asString();
+	}
 		
 }
