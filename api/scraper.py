@@ -7,10 +7,14 @@ import requests
 import urllib2
 import re
 
+from flask import Flask
+
 from db import *
 
 START_YEAR = 2005
 CUR_YEAR = datetime.now().year
+
+setup_script()
 
 api = MWApi('http://en.wikipedia.org')
 
@@ -80,6 +84,7 @@ def save_issue(date_string):
     if Issue.query.filter_by(date=date).count() != 0:
         return "Skipping %s" % date
     cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
+    db.session.add(cur_issue)
 
     issue = "Wikipedia:Wikipedia Signpost/Archives/" + date.strftime("%Y-%m-%d")
     doc = html.document_fromstring(content_for_title(issue))
@@ -96,13 +101,13 @@ def save_issue(date_string):
             else:
                 print permalink
                 raise
-        Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
-    session.commit()
+        post = Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
+        db.session.add(post)
+    db.session.commit()
     return "Done %s\n%s" % (date, "\n".join(articles))
 
 if __name__ == "__main__":
-    setup_all()
-    create_all()
+    db.create_all()
 
     issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]
     for issue in issues:

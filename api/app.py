@@ -2,10 +2,10 @@ from db import *
 from flask import *
 import json
 
-setup_all()
-
 app = Flask(__name__)
 app.debug = True
+
+setup_app(app)
 
 @app.route('/issues')
 def firstIssues():
@@ -48,7 +48,8 @@ def register_device():
     if regID:
         if Device.query.filter_by(regID=regID).count() == 0:
             device = Device(regID=regID)
-            session.commit() 
+            db.session.add(device)
+            db.session.commit() 
             return ("", 200)
         else:
             return ("regID already registered", 200)
@@ -61,8 +62,8 @@ def deregister_device():
     if regID:
         if Device.query.filter_by(regID=regID).count() != 0:
             device = Device.query.filter_by(regID=regID).one()
-            device.delete()
-            session.commit() 
+            db.session.delete(device)
+            db.session.commit() 
         return ("", 200)
     else:
         return ("No regID specified", 400) 
