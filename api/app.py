@@ -32,7 +32,6 @@ def post_permalink(permalink):
 def issue_permalink(permalink):
     issue = Issue.query.filter_by(permalink=permalink).one()
     posts = [post.serialize(True) for post in issue.posts]
-    posts.reverse()
     data = issue.serialize()
     data['posts'] = posts
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
