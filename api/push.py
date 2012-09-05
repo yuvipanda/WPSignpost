@@ -19,6 +19,7 @@ def push_issue(permalink):
     g = gcm.GCM(settings.GCM_KEY)
 
     devices = Device.query.limit(750).offset(0)
+    devices_length = devices.count()
     device_ids = [device.regID for device in devices if device.last_permalink != permalink]
     while device_ids:
         g.json_request(device_ids, data=data, collapse_key=permalink)
@@ -28,4 +29,5 @@ def push_issue(permalink):
             db.session.add(device)
         db.session.commit()
         devices = Device.query.limit(750).offset(devices_length)
+        devices_length = devices.count()
         device_ids = [device.regID for device in devices if device.last_permalink != permalink]

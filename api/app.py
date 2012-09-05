@@ -45,7 +45,7 @@ def update_issue(date):
         push_issue(issue.permalink)
         return "Pushed for %s" % issue.permalink
     else:
-        return "Ignored for %s" % issue.permalink
+        return "Ignored"
 
 @app.route('/device/register', methods=["POST"])
 def register_device():
