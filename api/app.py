@@ -24,6 +24,7 @@ def latest_issue():
     issue = cache.get("latest_issue")
     if not issue:
         issue = Issue.query.order_by(Issue.date.desc()).limit(1).one()
+        cache.set("latest_issue", issue)
     return (json.dumps(issue.serialize()), 200, {'Content-Type': 'application/json'})
 
 @app.route('/post/permalink/<path:permalink>')
