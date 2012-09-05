@@ -49,7 +49,7 @@ def issue_permalink(permalink):
         data['posts'] = posts
         issue_data = json.dumps(data)
         cache.set(key, issue_data)
-    return (json.dumps(data), 200, {'Content-Type': 'application/json'})
+    return (issue_data, 200, {'Content-Type': 'application/json'})
 
 @app.route('/issue/update/<date>', methods=["POST"])
 def update_issue(date):
