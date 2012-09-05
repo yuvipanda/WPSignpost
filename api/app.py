@@ -1,11 +1,13 @@
 from db import *
 from flask import *
 import json
-
+from werkzeug.contrib.cache import MemcachedCache
 app = Flask(__name__)
 app.debug = True
 
 setup_app(app)
+
+cache = MemcachedCache(['127.0.0.1:11211']) 
 
 @app.route('/issues')
 def firstIssues():
@@ -19,12 +21,13 @@ def issues(offset=0):
 
 @app.route('/issue/latest')
 def latest_issue():
-    issue = Issue.query.order_by(Issue.date.desc()).slice(0, 1)[0]
+    issue = cache.get("latest_issue")
+    if not issue:
+        issue = Issue.query.order_by(Issue.date.desc()).limit(1).one()
     return (json.dumps(issue.serialize()), 200, {'Content-Type': 'application/json'})
 
 @app.route('/post/permalink/<path:permalink>')
 def post_permalink(permalink):
-    print permalink
     post = Post.query.filter_by(permalink=permalink).one()
     return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
 
