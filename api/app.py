@@ -10,7 +10,7 @@ setup_app(app)
 cache = MemcachedCache(['127.0.0.1:11211']) 
 
 @app.route('/issues')
-def firstIssues():
+def first_issues():
     issues_data = cache.get("all_issues")
     if not issues_data:
         issues = Issue.query.order_by(Issue.date.desc()).all()
@@ -18,6 +18,12 @@ def firstIssues():
         issues_data = json.dumps(data)
         cache.set("all_issues", issues_data)
     return (issues_data, 200, {'Content-Type': 'application/json'})
+
+@app.route('/issues/<int:offset>')
+def issues(offset):
+    # Stub, here because I'm lazy
+    # offset is ignored
+    return first_issues()
 
 @app.route('/issue/latest')
 def latest_issue():
