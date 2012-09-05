@@ -17,7 +17,7 @@ public class SignpostApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		api = new SignpostAPI("http://yuvi.in/signpost");
+		api = new SignpostAPI("http://signpost.yuvi.in");
 		cache = new SignpostCache(api);
 		
 		GCMRegistrar.checkDevice(this);
