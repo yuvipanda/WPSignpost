@@ -14,7 +14,6 @@ from db import *
 START_YEAR = 2005
 CUR_YEAR = datetime.now().year
 
-setup_script()
 
 api = MWApi('http://en.wikipedia.org')
 
@@ -82,7 +81,8 @@ def parse_article(title):
 def save_issue(date_string):
     date = parser.parse(date_string)
     if Issue.query.filter_by(date=date).count() != 0:
-        return "Skipping %s" % date
+        print "Skipping %s" % date
+        return None
     cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
     db.session.add(cur_issue)
 
@@ -104,9 +104,10 @@ def save_issue(date_string):
         post = Post(permalink=permalink, title=title, content=content, author=author_name, author_link=author_link, issue=cur_issue, image_link=image_link)
         db.session.add(post)
     db.session.commit()
-    return "Done %s\n%s" % (date, "\n".join(articles))
+    return cur_issue
 
 if __name__ == "__main__":
+    setup_script()
     db.create_all()
 
     issues = [issue for issue in get_subpages("Wikipedia_Signpost/Archives/", 4) if '-' in issue]

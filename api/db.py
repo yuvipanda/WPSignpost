@@ -63,3 +63,4 @@ class Device(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     regID = db.Column(db.String(1024))
+    last_permalink = db.Column(db.String(1024), index=True)
