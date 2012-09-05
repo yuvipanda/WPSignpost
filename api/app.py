@@ -11,33 +11,44 @@ cache = MemcachedCache(['127.0.0.1:11211'])
 
 @app.route('/issues')
 def firstIssues():
-    return issues(0)
-
-@app.route('/issues/<int:offset>')
-def issues(offset=0):
-    issues = Issue.query.order_by(Issue.date.desc()).offset(offset)
-    data = [issue.serialize() for issue in issues]
-    return (json.dumps(data), 200, {'Content-Type': 'application/json'})
+    issues_data = cache.get("all_issues")
+    if not issues_data:
+        issues = Issue.query.order_by(Issue.date.desc()).all()
+        data = [issue.serialize() for issue in issues]
+        issues_data = json.dumps(data)
+        cache.set("all_issues", issues_data)
+    return (issues_data, 200, {'Content-Type': 'application/json'})
 
 @app.route('/issue/latest')
 def latest_issue():
-    issue = cache.get("latest_issue")
-    if not issue:
+    issue_data = cache.get("latest_issue")
+    if not issue_data:
         issue = Issue.query.order_by(Issue.date.desc()).limit(1).one()
-        cache.set("latest_issue", issue)
-    return (json.dumps(issue.serialize()), 200, {'Content-Type': 'application/json'})
+        issue_data = json.dumps(issue.serialize())
+        cache.set("latest_issue", issue_data)
+    return (issue_data, 200, {'Content-Type': 'application/json'})
 
 @app.route('/post/permalink/<path:permalink>')
 def post_permalink(permalink):
-    post = Post.query.filter_by(permalink=permalink).one()
-    return (json.dumps(post.serialize()), 200, {'Content-Type': 'application/json'})
+    key = "post_" + permalink
+    post_data = cache.get(key)
+    if not post_data:
+        post = Post.query.filter_by(permalink=permalink).one()
+        post_data = json.dumps(post.serialize())
+        cache.set(key, post_data)
+    return (post_data, 200, {'Content-Type': 'application/json'})
 
 @app.route('/issue/permalink/<path:permalink>')
 def issue_permalink(permalink):
-    issue = Issue.query.filter_by(permalink=permalink).one()
-    posts = [post.serialize(True) for post in issue.posts]
-    data = issue.serialize()
-    data['posts'] = posts
+    key = "issue_" + permalink
+    issue_data = cache.get(key)
+    if not issue_data:
+        issue = Issue.query.filter_by(permalink=permalink).one()
+        posts = [post.serialize(True) for post in issue.posts]
+        data = issue.serialize()
+        data['posts'] = posts
+        issue_data = json.dumps(data)
+        cache.set(key, issue_data)
     return (json.dumps(data), 200, {'Content-Type': 'application/json'})
 
 @app.route('/issue/update/<date>', methods=["POST"])
