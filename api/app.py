@@ -60,6 +60,7 @@ def issue_permalink(permalink):
 @app.route('/issue/update/<date>', methods=["POST"])
 def update_issue(date):
     from scraper import save_issue
+    cache.set("latest_issue", None)
     return save_issue(date)
 
 @app.route('/issue/push/latest', methods=["POST"])
