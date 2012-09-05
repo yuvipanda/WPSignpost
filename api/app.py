@@ -39,13 +39,13 @@ def issue_permalink(permalink):
 @app.route('/issue/update/<date>', methods=["POST"])
 def update_issue(date):
     from scraper import save_issue
+    return save_issue(date)
+
+@app.route('/issue/push/latest', methods=["POST"])
+def push_latest_issue():
+    issue = Issue.query.order_by(Issue.date.desc()).limit(1).one()
     from push import push_issue
-    issue = save_issue(date)
-    if issue:
-        push_issue(issue.permalink)
-        return "Pushed for %s" % issue.permalink
-    else:
-        return "Ignored"
+    return str(push_issue(issue.permalink))
 
 @app.route('/device/register', methods=["POST"])
 def register_device():

@@ -21,13 +21,15 @@ def push_issue(permalink):
     devices = Device.query.limit(750).offset(0)
     devices_length = devices.count()
     device_ids = [device.regID for device in devices if device.last_permalink != permalink]
+    count = 0
     while device_ids:
         g.json_request(device_ids, data=data, collapse_key=permalink)
-        print "Pushed for " + ','.join(device_ids)
         for device in devices:
             device.last_permalink = permalink
             db.session.add(device)
+            count += 1
         db.session.commit()
         devices = Device.query.limit(750).offset(devices_length)
         devices_length = devices.count()
         device_ids = [device.regID for device in devices if device.last_permalink != permalink]
+    return count
