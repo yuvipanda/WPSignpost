@@ -65,6 +65,7 @@ def update_latest_issue():
     from scraper import save_issue
     date = api.get({'action': 'expandtemplates', 'text': '{{Wikipedia:Wikipedia_Signpost/Issue|1}}'})['expandtemplates']['*']
     cache.set("latest_issue", None)
+    cache.set("all_issues", None)
     save_issue(date)
     return push_latest_issue()
 
