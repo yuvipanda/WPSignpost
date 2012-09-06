@@ -2,12 +2,15 @@ from db import *
 from flask import *
 import json
 from werkzeug.contrib.cache import MemcachedCache
+from mwapi import MWApi
 app = Flask(__name__)
 app.debug = True
 
 setup_app(app)
 
 cache = MemcachedCache(['127.0.0.1:11211']) 
+
+api = MWApi("http://en.wikipedia.org")
 
 @app.route('/issues')
 def first_issues():
@@ -57,11 +60,13 @@ def issue_permalink(permalink):
         cache.set(key, issue_data)
     return (issue_data, 200, {'Content-Type': 'application/json'})
 
-@app.route('/issue/update/<date>', methods=["POST"])
-def update_issue(date):
+@app.route('/issue/update/latest', methods=["POST"])
+def update_latest_issue():
     from scraper import save_issue
+    date = api.get({'action': 'expandtemplates', 'text': '{{Wikipedia:Wikipedia_Signpost/Issue|1}}'})['expandtemplates']['*']
     cache.set("latest_issue", None)
-    return save_issue(date)
+    save_issue(date)
+    return push_latest_issue()
 
 @app.route('/issue/push/latest', methods=["POST"])
 def push_latest_issue():
