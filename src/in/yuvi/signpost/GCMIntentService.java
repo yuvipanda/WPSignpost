@@ -62,8 +62,8 @@ public class GCMIntentService extends GCMBaseIntentService {
                 .setContentTitle(title).setContentIntent(pendingIntent)
                 .setContentText(contentText)
                 .setTicker(tickerText)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification))
+                .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .getNotification();
