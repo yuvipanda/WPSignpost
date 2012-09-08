@@ -1,12 +1,13 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-import in.yuvi.wpsignpost.api.Issue;
-import in.yuvi.wpsignpost.api.Post;
-import in.yuvi.wpsignpost.api.SignpostAPI;
+import in.yuvi.signpost.api.Issue;
+import in.yuvi.signpost.api.Post;
+import in.yuvi.signpost.api.SignpostAPI;
+import in.yuvi.signpost.R;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;

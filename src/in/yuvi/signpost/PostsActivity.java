@@ -1,4 +1,4 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -11,7 +11,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.http.client.methods.HttpUriRequest;
 
-import in.yuvi.wpsignpost.api.*;
+import in.yuvi.signpost.api.*;
+import in.yuvi.signpost.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;

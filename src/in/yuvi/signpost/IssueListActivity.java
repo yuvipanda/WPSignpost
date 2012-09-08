@@ -1,8 +1,9 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
 
 import java.util.ArrayList;
 
-import in.yuvi.wpsignpost.api.*;
+import in.yuvi.signpost.api.*;
+import in.yuvi.signpost.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;

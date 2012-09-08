@@ -1,10 +1,10 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.*;
 
-import in.yuvi.wpsignpost.api.*;
+import in.yuvi.signpost.api.*;
 import android.app.*;
 import android.util.Log;
 

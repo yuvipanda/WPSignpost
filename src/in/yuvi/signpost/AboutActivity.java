@@ -1,4 +1,6 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
+
+import in.yuvi.signpost.R;
 
 import com.actionbarsherlock.app.*;
 

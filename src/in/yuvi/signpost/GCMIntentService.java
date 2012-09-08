@@ -1,6 +1,7 @@
-package in.yuvi.wpsignpost;
+package in.yuvi.signpost;
 
-import in.yuvi.wpsignpost.api.Issue;
+import in.yuvi.signpost.api.Issue;
+import in.yuvi.signpost.R;
 
 import java.io.NotActiveException;
 import java.text.DateFormat;

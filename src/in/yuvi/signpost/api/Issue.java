@@ -1,4 +1,4 @@
-package in.yuvi.wpsignpost.api;
+package in.yuvi.signpost.api;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
