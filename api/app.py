@@ -121,7 +121,8 @@ def feed():
                         content_type='html',
                         author=post.author,
                         url='https://' + post.permalink,
-                        updated=issue.date
+                        updated=issue.date,
+                        xml_base='https://en.wikipedia.org'
                         )
         resp = doc.get_response()
         cache.set('feed', (resp.data, resp.status, resp.headers))
