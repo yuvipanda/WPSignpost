@@ -2,6 +2,8 @@ from db import *
 from flask import *
 import json
 from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.contrib.atom import AtomFeed
+
 from mwapi import MWApi
 app = Flask(__name__)
 app.debug = True
@@ -66,6 +68,7 @@ def update_latest_issue():
     date = api.get({'action': 'expandtemplates', 'text': '{{Wikipedia:Wikipedia_Signpost/Issue|1}}'})['expandtemplates']['*']
     cache.set("latest_issue", None)
     cache.set("all_issues", None)
+    cache.set("feed", None)
     save_issue(date)
     return push_latest_issue()
 
@@ -100,6 +103,29 @@ def deregister_device():
         return ("", 200)
     else:
         return ("No regID specified", 400) 
+
+@app.route('/feed')
+def feed():
+    issues = Issue.query.order_by(Issue.date.desc()).limit(3)
+    resp_data = cache.get('feed')
+    if resp_data:
+        resp = make_response(resp_data)
+    else:
+        doc = AtomFeed('Signpost',
+                feed_url=request.url, 
+                url='https://en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost'
+                )
+        for issue in issues:
+            for post in issue.posts:
+                doc.add(post.title, unicode(post.content),
+                        content_type='html',
+                        author=post.author,
+                        url='https://' + post.permalink,
+                        updated=issue.date
+                        )
+        resp = doc.get_response()
+        cache.set('feed', (resp.data, resp.status, resp.headers))
+    return resp
 
 if __name__ == '__main__':
     app.run()
