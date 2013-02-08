@@ -19,7 +19,8 @@ public class SignpostApp extends Application {
 		super.onCreate();
 		api = new SignpostAPI("http://signpost.yuvi.in");
 		cache = new SignpostCache(api);
-		
+
+        try {
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
 		final String regId = GCMRegistrar.getRegistrationId(this);
@@ -27,7 +28,12 @@ public class SignpostApp extends Application {
 		  GCMRegistrar.register(this, "617551494731");
 		} else {
 		  Log.v("SignpostApp", "Already registered");
-		}		
+		}
+        } catch(UnsupportedOperationException e) {
+            // No GCM support!
+            Log.d("SignpostApp", "Enjoy your Google free life, brave sir!");
+        }
+
 		
 	}
 
