@@ -19,12 +19,12 @@ api = MWApi('http://en.wikipedia.org')
 
 def content_for_title(title):
     title = urllib2.unquote(title)
-    data = api.get({'action': 'parse', 'page': title, 'redirects': '1', 'prop': 'text'})['parse']
+    data = api.get(action='parse',page=title, redirects=1, prop='text')['parse']
     text = data['text']['*']
     return text
 
 def get_subpages(prefix, namespace):
-    pages = api.get({'action': 'query', 'list': 'allpages', 'apprefix': prefix, 'apnamespace': namespace, 'aplimit': 500})['query']['allpages']
+    pages = api.get(action='query', list='allpages', apprefix=prefix, apnamespace=namespace, aplimit=500)['query']['allpages']
     return [page['title'] for page in pages]
 
 def title_for_year(year):
@@ -46,7 +46,7 @@ def parse_image(doc):
     if link:
         name = link[0].get('href').replace('/wiki/', '')
         name = urllib2.unquote(name)
-        data = api.get({'action': 'query', 'prop': 'imageinfo', 'iiprop': 'url', 'iiurlwidth': 512, 'iiurlheight': 512, 'titles': name})['query']['pages'].values()[0]
+        data = api.get(action='query', prop='imageinfo', iiprop='url', iiurlwidth=512, iiurlheight=512, titles=name)['query']['pages'].values()[0]
         if 'imageinfo' not in data:
             return None
         return data['imageinfo'][0]['thumburl']
