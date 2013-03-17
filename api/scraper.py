@@ -82,6 +82,7 @@ def save_issue(date_string):
     date = parser.parse(date_string)
     if Issue.query.filter_by(date=date).count() != 0:
         print "Skipping %s" % date
+        continue
     cur_issue = Issue(date=date, permalink="en.wikipedia.org/wiki/Wikipedia:Wikipedia_Signpost/Archives/" + date.strftime("%Y-%m-%d"))
     db.session.add(cur_issue)
 
