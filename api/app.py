@@ -65,7 +65,7 @@ def issue_permalink(permalink):
 @app.route('/issue/update/latest', methods=["POST"])
 def update_latest_issue():
     from scraper import save_issue
-    date = api.get({'action': 'expandtemplates', 'text': '{{Wikipedia:Wikipedia_Signpost/Issue|1}}'})['expandtemplates']['*']
+    date = api.get(action='expandtemplates', text='{{Wikipedia:Wikipedia_Signpost/Issue|1}}')['expandtemplates']['*']
     cache.set("latest_issue", None)
     cache.set("all_issues", None)
     cache.set("feed", None)
