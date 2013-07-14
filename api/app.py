@@ -1,7 +1,7 @@
 from db import *
 from flask import *
 import json
-from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.contrib.cache import RedisCache
 from werkzeug.contrib.atom import AtomFeed
 
 from mwapi import MWApi
@@ -10,7 +10,7 @@ app.debug = True
 
 setup_app(app)
 
-cache = MemcachedCache(['127.0.0.1:11211']) 
+cache = RedisCache(host=settings.REDIS_HOST, db=settings.REDIS_DB, key_prefix=settings.REDIS_PREFIX)
 
 api = MWApi("http://en.wikipedia.org")
 
